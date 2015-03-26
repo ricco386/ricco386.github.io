@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>https://ricco386.github.io/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="https://ricco386.github.io/feeds/backups.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 17 Feb 2015 22:44:00 +0100</lastBuildDate><item><title>Simple and space efficient backups with rsnapshot</title><link>https://ricco386.github.io/simple-and-space-efficient-backups-with-rsnapshot.html</link><description>&lt;p&gt;I have been using rsnapshot on my raspberry pi for some time as a backup solutiona and I have to admin it works really well.&lt;/p&gt;
+&lt;p&gt;Installation was very easy:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install rsnapshot
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once installed I have created a config file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cp /etc/rsnapshot.conf.default /etc/rsnapshot.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are some important values that can be customized, like storage path, but I will focus on backup interavals as that might not be obvious on first use:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;retain      hourly  6
+retain      daily   7
+retain      weekly  4
+retain      monthly 3
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;rsnapshot is configured how many of each backups should be kept. Each time rsnapshot is run with the hourly command, it will rotate the hourly.X directories, and then "copy" the contents of the hourly.0 directory (using hard links) into hourly.1.&lt;/p&gt;
+&lt;p&gt;When rsnapshot daily is run, it will rotate all the daily.X directories, then copy the contents of hourly.6 into daily.0. So hourly.0 will always contain the most recent backup and daily.7 will contain backup from week ago...&lt;/p&gt;
+&lt;p&gt;And we can run the rsnapshot:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;rsnapshot hourly
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;or&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;rsnapshot daily
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we can automate this task via crontab:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;0   */4 * * *  /usr/bin/rsnapshot hourly 
+0   3   * * *  /usr/bin/rsnapshot daily
+0   2   * * 1  /usr/bin/rsnapshot weekly
+0   1   1 * *  /usr/bin/rsnapshot monthly
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is good idea to run the larger backup intervals before the lower ones as if hourly backup will run for 45 minutes, it gives use time to finish before just running the difference in daily backup. Othervise daily might not be run at all since once backup is running other wont start. &lt;/p&gt;
+&lt;p&gt;If you need to restore any of the backup directory, any user with read permission can simply copy the whole direcotry to desired location. To see how big are the directories with backups, we can simply generate reports, by running command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;rsnapshot du
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Tue, 17 Feb 2015 22:44:00 +0100</pubDate><guid>tag:ricco386.github.io,2015-02-17:simple-and-space-efficient-backups-with-rsnapshot.html</guid><category>backups</category></item></channel></rss>
