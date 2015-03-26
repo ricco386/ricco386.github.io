@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="https://ricco386.github.io/theme/img/favicon.ico">
 
-    <title>Richard's Log | Simple and space efficient backups with rsnapshot</title>
+    <title>Richard's Log | Nginx on CentOS from Nginx repository</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://ricco386.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +42,7 @@
     <div class="container">
 
 <div class="blog-header">
-  <h1 class="blog-title">Simple and space efficient backups with rsnapshot</h1>
+  <h1 class="blog-title">Nginx on CentOS from Nginx repository</h1>
 <!--  <p class="lead blog-description">Public notepad about stuff I am currently playing with...</p> -->
 </div>
 
@@ -52,56 +52,65 @@
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Tue 17 February 2015</p> -->
+      <!--      <p class="blog-post-meta">Wed 18 February 2015</p> -->
 
-      <div class="entry-content"> <p>I have been using rsnapshot on my raspberry pi for some time as a backup solutiona and I have to admin it works really well.</p>
-<p>Installation was very easy:</p>
-<div class="highlight"><pre>sudo apt-get install rsnapshot
+      <div class="entry-content"> <p>CentOS linux has Nginx in it own repository, but unfortunatelly this version is fairly old. Lets go throught adding official Nginx repository and install newer stable version on CentOS with yum. To add new repository from nginx.org run following commands:</p>
+<div class="highlight"><pre>cd /tmp
+wget http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+rpm -ivh nginx-release-centos-6-0.el6.ngx.noarch.rpm
 </pre></div>
 
 
-<p>Once installed I have created a config file:</p>
-<div class="highlight"><pre>cp /etc/rsnapshot.conf.default /etc/rsnapshot.conf
+<p>Now we have new repository and we can install latest version with yum</p>
+<div class="highlight"><pre>yum install nginx
 </pre></div>
 
 
-<p>There are some important values that can be customized, like storage path, but I will focus on backup interavals as that might not be obvious on first use:</p>
-<div class="highlight"><pre>retain      hourly  6
-retain      daily   7
-retain      weekly  4
-retain      monthly 3
+<p>Once it is installed, enable the service so it is started automatically after reboot</p>
+<div class="highlight"><pre>chkconfig nginx on
 </pre></div>
 
 
-<p>rsnapshot is configured how many of each backups should be kept. Each time rsnapshot is run with the hourly command, it will rotate the hourly.X directories, and then "copy" the contents of the hourly.0 directory (using hard links) into hourly.1.</p>
-<p>When rsnapshot daily is run, it will rotate all the daily.X directories, then copy the contents of hourly.6 into daily.0. So hourly.0 will always contain the most recent backup and daily.7 will contain backup from week ago...</p>
-<p>And we can run the rsnapshot:</p>
-<div class="highlight"><pre>rsnapshot hourly
+<p>We can start the server now but it wont be accessible from outside network so we have to do some configurtation. Edit nginx.conf</p>
+<div class="highlight"><pre>vi /etc/nginx/conf.d/default.conf
 </pre></div>
 
 
-<p>or</p>
-<div class="highlight"><pre>rsnapshot daily
+<p>We need to set the servers IP address and domain name where it will listen</p>
+<div class="highlight"><pre><span class="nt">listen</span>       <span class="nt">46</span><span class="nc">.229.234.206</span><span class="nd">:80</span><span class="o">;</span>
+<span class="nt">server_name</span>  <span class="nt">richard</span><span class="nc">.kellnerovci.sk</span><span class="o">;</span>
 </pre></div>
 
 
-<p>Now we can automate this task via crontab:</p>
-<div class="highlight"><pre>0   */4 * * *  /usr/bin/rsnapshot hourly 
-0   3   * * *  /usr/bin/rsnapshot daily
-0   2   * * 1  /usr/bin/rsnapshot weekly
-0   1   1 * *  /usr/bin/rsnapshot monthly
+<p>Now we can start server (other possible commands: stop, status, restart, reload)</p>
+<div class="highlight"><pre>service nginx start
 </pre></div>
 
 
-<p>It is good idea to run the larger backup intervals before the lower ones as if hourly backup will run for 45 minutes, it gives use time to finish before just running the difference in daily backup. Othervise daily might not be run at all since once backup is running other wont start. </p>
-<p>If you need to restore any of the backup directory, any user with read permission can simply copy the whole direcotry to desired location. To see how big are the directories with backups, we can simply generate reports, by running command:</p>
-<div class="highlight"><pre>rsnapshot du
+<p>Lets make sure it is running and listening on port 80</p>
+<div class="highlight"><pre>netstat -tulpn | grep :80
+ps aux | grep nginx
+</pre></div>
+
+
+<p>If Nginx welcome site is not accessible in browser most probably firewall is blocking it so lets edit iptables config</p>
+<div class="highlight"><pre>vi /etc/sysconfig/iptables
+</pre></div>
+
+
+<p>Add following line before the final LOG and DROP lines for the INPUT chain to open port 80:</p>
+<div class="highlight"><pre>-A INPUT -m state --state NEW -p tcp --dport 80 -j ACCEPT
+</pre></div>
+
+
+<p>Save and close the file. Now lets restart the firewall and try again...</p>
+<div class="highlight"><pre>service iptables restart
 </pre></div> </div><!-- entry-content -->
 
       <div class="entry-comments">
         <div id="disqus_thread"></div>
         <script type="text/javascript">
-        var disqus_identifier = "simple-and-space-efficient-backups-with-rsnapshot.html";
+        var disqus_identifier = "nginx-on-centos-from-nginx-repository.html";
         (function() {
             var dsq = document.createElement('script');
             dsq.type = 'text/javascript'; dsq.async = true;
@@ -117,15 +126,16 @@ retain      monthly 3
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2015-02-17T22:44:00+01:00">
-      <i class="icon-calendar"></i>&nbsp;Tue 17 February 2015
+    <abbr class="published" title="2015-02-18T21:24:00+01:00">
+      <i class="icon-calendar"></i>&nbsp;Wed 18 February 2015
     </abbr>
 
     <div class="sidebar-module">
       <h4>Tags</h4>
       <ol class="list-unstyled">
         <li><a href="https://ricco386.github.io/tag/howto.html"><i class="icon--sign icon-large"></i>howto</a></li>
-        <li><a href="https://ricco386.github.io/tag/backups.html"><i class="icon--sign icon-large"></i>backups</a></li>
+        <li><a href="https://ricco386.github.io/tag/nginx.html"><i class="icon--sign icon-large"></i>nginx</a></li>
+        <li><a href="https://ricco386.github.io/tag/centos.html"><i class="icon--sign icon-large"></i>centos</a></li>
       </ol>
     </div>
 

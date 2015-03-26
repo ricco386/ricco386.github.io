@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="https://ricco386.github.io/theme/img/favicon.ico">
 
-    <title>Richard's Log - Articles by Richard Kellner</title>
+    <title>Richard's Log | Encrypted backups with duplicity</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://ricco386.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -25,6 +25,7 @@
   
     <link href="https://ricco386.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
     <link href="https://ricco386.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+    <link href="https://ricco386.github.io/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
   </head>
 
   <body>
@@ -32,59 +33,70 @@
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="https://ricco386.github.io">Home</a>
+          <a class="blog-nav-item " href="https://ricco386.github.io">Home</a>
           <a class="blog-nav-item " href="https://ricco386.github.io/archives.html">Archives</a>
         </nav>
       </div>
     </div>
 
     <div class="container">
+
 <div class="blog-header">
-  <h1 class="blog-title">Richard's Log</h1>
-<p class="lead blog-description">Public notepad about stuff I am currently playing with...</p></div>
+  <h1 class="blog-title">Encrypted backups with duplicity</h1>
+<!--  <p class="lead blog-description">Public notepad about stuff I am currently playing with...</p> -->
+</div>
+
+
 <div class="row">
   <div class="col-sm-8 blog-main">
+    
     <div class="blog-post">
-      <h2 class="blog-post-title">
-        <a href="https://ricco386.github.io/nginx-on-centos-from-nginx-repository.html" rel="bookmark" title="Permalink to Nginx on CentOS from Nginx repository">Nginx on CentOS from Nginx repository</a>
-      </h2>
-      <p class="blog-post-meta">Wed 18 February 2015</p>
-      <div class="entry-content"> <p>CentOS linux has Nginx in it own repository, but unfortunatelly this version is faily old. In this article we will go throught adding official Nginx repository and install newer stable version on CentOS with yum.</p> </div><!-- entry-content -->
-    </div><!-- /.blog-post -->
-    <div class="blog-post">
-      <h2 class="blog-post-title">
-        <a href="https://ricco386.github.io/simple-and-space-efficient-backups-with-rsnapshot.html" rel="bookmark" title="Permalink to Simple and space efficient backups with rsnapshot">Simple and space efficient backups with rsnapshot</a>
-      </h2>
-      <p class="blog-post-meta">Tue 17 February 2015</p>
-      <div class="entry-content"> <p>Guide how to easily setup home backup solution. Rsnapshot is utility to create local and remote backups, using rsync and hardlinks, so it is possible to have disk space efficient multiple full backups available.</p> </div><!-- entry-content -->
+      <h2 class="blog-post-title"></h2>
+      <!--      <p class="blog-post-meta">Wed 18 February 2015</p> -->
+
+      <div class="entry-content"> <p>Last time I wrote <a href="https://ricco386.github.io/simple-and-space-efficient-backups-with-rsnapshot.html">how to backup with rsnapshot</a>, and I thought wouldnt it be cool if the backups are encrypted as well?! And voila the soulition is Duplicity.</p>
+<ul>
+<li>install duplicity</li>
+<li>generate gpg/ or use existing one</li>
+<li>running backups full / increamental</li>
+<li>explaining scp and file</li>
+<li>automatization</li>
+<li>verify and restore</li>
+<li>optimosation</li>
+</ul> </div><!-- entry-content -->
+
+      <div class="entry-comments">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        var disqus_identifier = "drafts/encrypted-backups-with-duplicity.html";
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://richard.kellnerovci.sk.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] ||
+              document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script>
+      </div><!-- entry-comments -->
+
     </div><!-- /.blog-post -->
   
   </div><!-- /.blog-main -->
 
-<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-  <div class="sidebar-module sidebar-module-inset">
-    <blockquote><p><em>In a world where death is the hunter, my friend, there is no time for regrets or doubts. There is only time for decisions.</em><br />― Carlos Castaneda</p></blockquote>
-  </div>
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <abbr class="published" title="2015-02-18T21:24:00+01:00">
+      <i class="icon-calendar"></i>&nbsp;Wed 18 February 2015
+    </abbr>
 
-  <!--
-  <div class="sidebar-module">
-    <h4>Archives</h4>
-    <ol class="list-unstyled">
-      <li><a href="#">March 2014</a></li>
-      <li><a href="#">February 2014</a></li>
-      <li><a href="#">January 2014</a></li>
-      <li><a href="#">December 2013</a></li>
-      <li><a href="#">November 2013</a></li>
-      <li><a href="#">October 2013</a></li>
-      <li><a href="#">September 2013</a></li>
-      <li><a href="#">August 2013</a></li>
-      <li><a href="#">July 2013</a></li>
-      <li><a href="#">June 2013</a></li>
-      <li><a href="#">May 2013</a></li>
-      <li><a href="#">April 2013</a></li>
-    </ol>
-  </div>
-  -->
+    <div class="sidebar-module">
+      <h4>Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="https://ricco386.github.io/tag/howto.html"><i class="icon--sign icon-large"></i>howto</a></li>
+        <li><a href="https://ricco386.github.io/tag/gpg.html"><i class="icon--sign icon-large"></i>gpg</a></li>
+        <li><a href="https://ricco386.github.io/tag/backups.html"><i class="icon--sign icon-large"></i>backups</a></li>
+      </ol>
+    </div>
+
 
 <div class="sidebar-module">
   <h4>Elsewhere</h4>
@@ -96,7 +108,9 @@
     <li><a href="https://ricco386.github.io/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
     <li><a href="https://ricco386.github.io/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
   </ol>
-</div></div><!-- /.blog-sidebar --></div><!-- /.row -->
+</div>  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
     </div><!--/.container -->
     <!-- End page content -->
 
