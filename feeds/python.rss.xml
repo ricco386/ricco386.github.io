@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/python.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 23 Jun 2012 16:37:00 +0200</lastBuildDate><item><title>How to start with virtualenv?</title><link>http://richard.kellnerovci.sk/how-to-start-with-virtualenv.html</link><description>&lt;p&gt;As the name virtualenv implies, it is isolated virtual environment, which allows us install multiple versions of python applications and libraries on one system.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;What is it good for?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Python allows install packages, which are available globally for whole system. If you are developing multiple applications, which needs different versions of dependencies, it is the right time to use virtual environments. For example we have web application that uses Django 1.3.1 and we want to migrate it into version 1.4.0 and have both versions available at the same time. This is what is virtual environments used for, because it allows us to have installed both versions on one machine at the same time.&lt;/p&gt;
+&lt;p&gt;We will use pip (Python Package Manager) for installation, but if you are used to easy_install you can use it as well. Following commands requires root access, or at least sudo access, so you can install packages globally for all users.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo easy_install pip
+sudo pip install virtualenv
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next command execute as standard user, who would like to use virtual environments. Lets create directory where will be python isolated environment, where all packages will be stored.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;virtualenv --no-site-packages envs
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next step is activate virtual environment&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cd envs
+source bin/activate
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After executing this command, our command line changes a little bit, and now we can install packages into our virtual environment.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install django==1.4.0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;this command will install django version 1.4.0 into virtual environment, and all other users can use globaly installed django version 1.3.1. This way you can install all necessary packages for your application. Later when we will need to move (synchronize) them from your virtual environment into server, or other computer, simply export all installed packages into text file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip freeze &amp;gt; requirements.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;on server just install all packages with command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install -r requirements.txt
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Sat, 23 Jun 2012 16:37:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2012-06-23:how-to-start-with-virtualenv.html</guid><category>Python</category><category>virtualenv</category></item></channel></rss>

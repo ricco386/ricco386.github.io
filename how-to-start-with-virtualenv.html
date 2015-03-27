@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Richard Kellner">
+    <meta name="keywords" content="" />
+    <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
+
+    <title>Richard's Log | How to start with virtualenv?</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://richard.kellnerovci.sk/theme/css/blog.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+    <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk">Home</a>
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk/archives.html">Archives</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="blog-header">
+        <h1 class="blog-title">How to start with virtualenv?</h1>
+<p class="lead blog-description"></p>      </div>
+<div class="row">
+  <div class="col-sm-8 blog-main">
+    
+    <div class="blog-post">
+      <h2 class="blog-post-title"></h2>
+      <!--      <p class="blog-post-meta">Sat 23 June 2012</p> -->
+
+      <div class="entry-content"> <p>As the name virtualenv implies, it is isolated virtual environment, which allows us install multiple versions of python applications and libraries on one system.</p>
+<p><em>What is it good for?</em></p>
+<p>Python allows install packages, which are available globally for whole system. If you are developing multiple applications, which needs different versions of dependencies, it is the right time to use virtual environments. For example we have web application that uses Django 1.3.1 and we want to migrate it into version 1.4.0 and have both versions available at the same time. This is what is virtual environments used for, because it allows us to have installed both versions on one machine at the same time.</p>
+<p>We will use pip (Python Package Manager) for installation, but if you are used to easy_install you can use it as well. Following commands requires root access, or at least sudo access, so you can install packages globally for all users.</p>
+<div class="highlight"><pre>sudo easy_install pip
+sudo pip install virtualenv
+</pre></div>
+
+
+<p>Next command execute as standard user, who would like to use virtual environments. Lets create directory where will be python isolated environment, where all packages will be stored.</p>
+<div class="highlight"><pre>virtualenv --no-site-packages envs
+</pre></div>
+
+
+<p>Next step is activate virtual environment</p>
+<div class="highlight"><pre>cd envs
+source bin/activate
+</pre></div>
+
+
+<p>After executing this command, our command line changes a little bit, and now we can install packages into our virtual environment.</p>
+<div class="highlight"><pre>pip install django==1.4.0
+</pre></div>
+
+
+<p>this command will install django version 1.4.0 into virtual environment, and all other users can use globaly installed django version 1.3.1. This way you can install all necessary packages for your application. Later when we will need to move (synchronize) them from your virtual environment into server, or other computer, simply export all installed packages into text file:</p>
+<div class="highlight"><pre>pip freeze &gt; requirements.txt
+</pre></div>
+
+
+<p>on server just install all packages with command:</p>
+<div class="highlight"><pre>pip install -r requirements.txt
+</pre></div> </div><!-- entry-content -->
+<div class="entry-comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'richardkellnerovcisk';
+    var disqus_identifier = 'how-to-start-with-virtualenv.html';
+    var disqus_title = 'How to start with virtualenv?';
+    var disqus_url = 'http://richard.kellnerovci.sk/how-to-start-with-virtualenv.html';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div><!-- entry-comments -->
+    </div><!-- /.blog-post -->
+  
+  </div><!-- /.blog-main -->
+
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <abbr class="published" title="2012-06-23T16:37:00+02:00">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Sat 23 June 2012
+    </abbr>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="http://richard.kellnerovci.sk/tag/python.html">Python</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/virtualenv.html">virtualenv</a></li>
+      </ol>
+    </div>
+
+<div class="sidebar-module">
+  <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Elsewhere</h4>
+  <ol class="list-unstyled">
+    <li><a href="https://github.com/ricco386"><i class="icon-github-sign icon-large"></i>Github</a></li>
+    <li><a href="https://twitter.com/RicCo386"><i class="icon-twitter-sign icon-large"></i>Twitter</a></li>
+    <li><a href="https://www.linkedin.com/in/richardkellner"><i class="icon-linkedin-sign icon-large"></i>LinkedIn</a></li>
+    <li><a href="https://keybase.io/ricco"><i class="icon-keybase-sign icon-large"></i>Keybase</a></li>
+    <li><a href="http://richard.kellnerovci.sk/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
+  </ol>
+</div>
+  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
+    </div><!--/.container -->
+    <!-- End page content -->
+
+    <footer class="blog-footer">
+      <p>
+        <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
+        <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+
+        &copy; <a href="http://richard.kellnerovci.sk">Richard's Log</a> Proudly powered by <a href="http://getpelican.com/">Pelican</a>
+      </p>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://richard.kellnerovci.sk/theme/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://richard.kellnerovci.sk/theme/js/ie10-viewport-bug-workaround.js"></script>
+
+  </body>
+</html>
