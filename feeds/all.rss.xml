@@ -92,7 +92,30 @@ retain      monthly 3
 &lt;p&gt;It is good idea to run the larger backup intervals before the lower ones as if hourly backup will run for 45 minutes, it gives use time to finish before just running the difference in daily backup. Othervise daily might not be run at all since once backup is running other wont start. &lt;/p&gt;
 &lt;p&gt;If you need to restore any of the backup directory, any user with read permission can simply copy the whole direcotry to desired location. To see how big are the directories with backups, we can simply generate reports, by running command:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;rsnapshot du
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Tue, 17 Feb 2015 22:44:00 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2015-02-17:simple-and-space-efficient-backups-with-rsnapshot.html</guid><category>howto</category><category>backups</category></item><item><title>How to start with virtualenv?</title><link>http://richard.kellnerovci.sk/how-to-start-with-virtualenv.html</link><description>&lt;p&gt;As the name virtualenv implies, it is isolated virtual environment, which allows us install multiple versions of python applications and libraries on one system.&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Tue, 17 Feb 2015 22:44:00 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2015-02-17:simple-and-space-efficient-backups-with-rsnapshot.html</guid><category>howto</category><category>backups</category></item><item><title>Serving static files in production environment with Django and Apache</title><link>http://richard.kellnerovci.sk/serving-static-files-in-production-environment-with-django-and-apache.html</link><description>&lt;p&gt;Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.&lt;/p&gt;
+&lt;p&gt;In production environment static files should be allways send by webserver. In order to manage this, we need to collect static files and make sure that they are served by webserver. In our case we will show it on Apache webserver configuration (but same applies for other webservers).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;settings.py&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;STATIC_ROOT = &amp;#39;/var/www/localhost/htdocs/mysite/static/&amp;#39;
+STATIC_URL = &amp;#39;/static/&amp;#39; # default
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Django knows where to collect static files, so we dont have to specify anything. If we use our own files we have to specify them in &lt;em&gt;STATICFILES_DIRS&lt;/em&gt; configuration variable. In directory &lt;em&gt;/var/www/localhost/htdocs/mysite/&lt;/em&gt; we have to execute:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python manage.py collectstatic
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This command will copy all static files from all installed applications. If you want to save space, it is possible to run script with parameter &lt;em&gt;-l&lt;/em&gt; and it will create symbolic links instead of copy.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;httpd.conf&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;We need to configure webserver so it knows where are static files stored. Let's modify Apache's config (either httpd.conf, or vhost) and add information about &lt;em&gt;STATIC_URL&lt;/em&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Alias /static/ /var/www/localhost/htdocs/mysite/static/
+Directory /var/www/localhost/htdocs/mysite/static
+Order deny,allow
+Allow from all
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Restart Apache and we are done. &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Fri, 27 Jul 2012 17:13:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2012-07-27:serving-static-files-in-production-environment-with-django-and-apache.html</guid><category>Django</category><category>Apache</category></item><item><title>How to start with virtualenv?</title><link>http://richard.kellnerovci.sk/how-to-start-with-virtualenv.html</link><description>&lt;p&gt;As the name virtualenv implies, it is isolated virtual environment, which allows us install multiple versions of python applications and libraries on one system.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;What is it good for?&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Python allows install packages, which are available globally for whole system. If you are developing multiple applications, which needs different versions of dependencies, it is the right time to use virtual environments. For example we have web application that uses Django 1.3.1 and we want to migrate it into version 1.4.0 and have both versions available at the same time. This is what is virtual environments used for, because it allows us to have installed both versions on one machine at the same time.&lt;/p&gt;
 &lt;p&gt;We will use pip (Python Package Manager) for installation, but if you are used to easy_install you can use it as well. Following commands requires root access, or at least sudo access, so you can install packages globally for all users.&lt;/p&gt;

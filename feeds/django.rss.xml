@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/django.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 27 Jul 2012 17:13:00 +0200</lastBuildDate><item><title>Serving static files in production environment with Django and Apache</title><link>http://richard.kellnerovci.sk/serving-static-files-in-production-environment-with-django-and-apache.html</link><description>&lt;p&gt;Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.&lt;/p&gt;
+&lt;p&gt;In production environment static files should be allways send by webserver. In order to manage this, we need to collect static files and make sure that they are served by webserver. In our case we will show it on Apache webserver configuration (but same applies for other webservers).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;settings.py&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;STATIC_ROOT = &amp;#39;/var/www/localhost/htdocs/mysite/static/&amp;#39;
+STATIC_URL = &amp;#39;/static/&amp;#39; # default
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Django knows where to collect static files, so we dont have to specify anything. If we use our own files we have to specify them in &lt;em&gt;STATICFILES_DIRS&lt;/em&gt; configuration variable. In directory &lt;em&gt;/var/www/localhost/htdocs/mysite/&lt;/em&gt; we have to execute:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python manage.py collectstatic
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This command will copy all static files from all installed applications. If you want to save space, it is possible to run script with parameter &lt;em&gt;-l&lt;/em&gt; and it will create symbolic links instead of copy.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;httpd.conf&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;We need to configure webserver so it knows where are static files stored. Let's modify Apache's config (either httpd.conf, or vhost) and add information about &lt;em&gt;STATIC_URL&lt;/em&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Alias /static/ /var/www/localhost/htdocs/mysite/static/
+Directory /var/www/localhost/htdocs/mysite/static
+Order deny,allow
+Allow from all
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Restart Apache and we are done. &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Fri, 27 Jul 2012 17:13:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2012-07-27:serving-static-files-in-production-environment-with-django-and-apache.html</guid><category>Django</category><category>Apache</category></item></channel></rss>
