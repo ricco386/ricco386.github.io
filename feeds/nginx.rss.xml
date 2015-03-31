@@ -50,4 +50,4 @@ ps aux | grep nginx
 
 &lt;p&gt;Save and close the file. Now lets restart the firewall and try again...&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;service iptables restart
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Wed, 18 Feb 2015 21:24:00 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2015-02-18:nginx-on-centos-from-nginx-repository.html</guid><category>howto</category><category>nginx</category><category>centos</category></item></channel></rss>
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Wed, 18 Feb 2015 21:24:00 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2015-02-18:nginx-on-centos-from-nginx-repository.html</guid><category>nginx</category><category>centos</category></item></channel></rss>
