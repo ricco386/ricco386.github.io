@@ -92,7 +92,29 @@ retain      monthly 3
 &lt;p&gt;It is good idea to run the larger backup intervals before the lower ones as if hourly backup will run for 45 minutes, it gives use time to finish before just running the difference in daily backup. Othervise daily might not be run at all since once backup is running other wont start. &lt;/p&gt;
 &lt;p&gt;If you need to restore any of the backup directory, any user with read permission can simply copy the whole direcotry to desired location. To see how big are the directories with backups, we can simply generate reports, by running command:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;rsnapshot du
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="backups"></category></entry><entry><title>Serving static files in production environment with Django and Apache</title><link href="http://richard.kellnerovci.sk/serving-static-files-in-production-environment-with-django-and-apache.html" rel="alternate"></link><updated>2012-07-27T17:13:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2012-07-27:serving-static-files-in-production-environment-with-django-and-apache.html</id><summary type="html">&lt;p&gt;Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="backups"></category></entry><entry><title>How to get back free space after deleting MySQL database</title><link href="http://richard.kellnerovci.sk/how-to-get-back-free-space-after-deleting-mysql-database.html" rel="alternate"></link><updated>2013-01-31T10:48:00+01:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2013-01-31:how-to-get-back-free-space-after-deleting-mysql-database.html</id><summary type="html">&lt;p&gt;One of the MySQL characteristics when using InnoDB is, if you delete database, MySQL is not able to return empty space back. If you have small databases you probably didnt even noticed it. However if your databases have several GB, you probably wish to get it back.&lt;/p&gt;
+&lt;p&gt;Good news is, if you import your DB back, MySQL will use disk space, that it has already taken. So lets set MySQL in a way that we will be able to get back our disk space once we delete the database. InnoDB databases are not able to reduce file ibdata (standard directory in Fedore is situated in /var/lib/mysql). To get disk space back we will have to delete this file, but first lets follow this steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Modify MySQL configuration, so server will store data separately for each table. Lets do it in file &lt;strong&gt;my.cnf&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;[mysqld]
+innodb_file_per_table&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;We have to do the backup of all databases (mysqldump)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Delete all databases (drop database) apart from these &lt;/p&gt;
+&lt;p&gt;mysql, information_schema, performance_schema&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Stop MySQL server&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Delete files &lt;strong&gt;ibdata1&lt;/strong&gt; and &lt;strong&gt;ib_log* &lt;/strong&gt;
+6. Start MySQL server&lt;/li&gt;
+&lt;li&gt;Restore databases from backups we have made in step 2&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;When we start MySQL server, files &lt;strong&gt;ibdata1&lt;/strong&gt; and &lt;strong&gt;ib-log&lt;/strong&gt; will be created automatically. From now on if we create new databases, in subdirectory of database for each table new file with ibd will be created. In future if you delete database, whole directory will be deleted and we will have automatically disk space back.&lt;/p&gt;</summary><category term="MySQL"></category></entry><entry><title>Serving static files in production environment with Django and Apache</title><link href="http://richard.kellnerovci.sk/serving-static-files-in-production-environment-with-django-and-apache.html" rel="alternate"></link><updated>2012-07-27T17:13:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2012-07-27:serving-static-files-in-production-environment-with-django-and-apache.html</id><summary type="html">&lt;p&gt;Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.&lt;/p&gt;
 &lt;p&gt;In production environment static files should be allways send by webserver. In order to manage this, we need to collect static files and make sure that they are served by webserver. In our case we will show it on Apache webserver configuration (but same applies for other webservers).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;settings.py&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;STATIC_ROOT = &amp;#39;/var/www/localhost/htdocs/mysite/static/&amp;#39;

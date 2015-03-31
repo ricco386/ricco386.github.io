@@ -8,7 +8,7 @@
     <meta name="keywords" content="" />
     <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
 
-    <title>Richard's Log | Archives</title>
+    <title>Richard's Log | How to get back free space after deleting MySQL database</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,7 @@
   
     <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
     <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
   </head>
 
   <body>
@@ -40,45 +41,70 @@
 
     <div class="container">
       <div class="blog-header">
-        <h1 class="blog-title">Richard's Log: Archives</h1>
-<p class="lead blog-description">Public notepad about stuff I am currently playing with...</p>      </div>
+        <h1 class="blog-title">How to get back free space after deleting MySQL database</h1>
+<p class="lead blog-description"></p>      </div>
 <div class="row">
   <div class="col-sm-8 blog-main">
-    <dl>
-        <dt>Wed 18 February 2015</dt>
-        <dd><a href='nginx-on-centos-from-nginx-repository.html'>Nginx on CentOS from Nginx repository</a></dd>
-        <dt>Tue 17 February 2015</dt>
-        <dd><a href='simple-and-space-efficient-backups-with-rsnapshot.html'>Simple and space efficient backups with rsnapshot</a></dd>
-        <dt>Thu 31 January 2013</dt>
-        <dd><a href='how-to-get-back-free-space-after-deleting-mysql-database.html'>How to get back free space after deleting MySQL database</a></dd>
-        <dt>Fri 27 July 2012</dt>
-        <dd><a href='serving-static-files-in-production-environment-with-django-and-apache.html'>Serving static files in production environment with Django and Apache</a></dd>
-        <dt>Sat 23 June 2012</dt>
-        <dd><a href='how-to-start-with-virtualenv.html'>How to start with virtualenv?</a></dd>
-    </dl>
+    
+    <div class="blog-post">
+      <h2 class="blog-post-title"></h2>
+      <!--      <p class="blog-post-meta">Thu 31 January 2013</p> -->
+
+      <div class="entry-content"> <p>One of the MySQL characteristics when using InnoDB is, if you delete database, MySQL is not able to return empty space back. If you have small databases you probably didnt even noticed it. However if your databases have several GB, you probably wish to get it back.</p>
+<p>Good news is, if you import your DB back, MySQL will use disk space, that it has already taken. So lets set MySQL in a way that we will be able to get back our disk space once we delete the database. InnoDB databases are not able to reduce file ibdata (standard directory in Fedore is situated in /var/lib/mysql). To get disk space back we will have to delete this file, but first lets follow this steps:</p>
+<ol>
+<li>
+<p>Modify MySQL configuration, so server will store data separately for each table. Lets do it in file <strong>my.cnf</strong>:</p>
+<p>[mysqld]
+innodb_file_per_table</p>
+</li>
+<li>
+<p>We have to do the backup of all databases (mysqldump)</p>
+</li>
+<li>
+<p>Delete all databases (drop database) apart from these </p>
+<p>mysql, information_schema, performance_schema</p>
+</li>
+<li>
+<p>Stop MySQL server</p>
+</li>
+<li>Delete files <strong>ibdata1</strong> and <strong>ib_log* </strong>
+6. Start MySQL server</li>
+<li>Restore databases from backups we have made in step 2</li>
+</ol>
+<p>When we start MySQL server, files <strong>ibdata1</strong> and <strong>ib-log</strong> will be created automatically. From now on if we create new databases, in subdirectory of database for each table new file with ibd will be created. In future if you delete database, whole directory will be deleted and we will have automatically disk space back.</p> </div><!-- entry-content -->
+<div class="entry-comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'richardkellnerovcisk';
+    var disqus_identifier = 'how-to-get-back-free-space-after-deleting-mysql-database.html';
+    var disqus_title = 'How to get back free space after deleting MySQL database';
+    var disqus_url = 'http://richard.kellnerovci.sk/how-to-get-back-free-space-after-deleting-mysql-database.html';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div><!-- entry-comments -->
+    </div><!-- /.blog-post -->
+  
   </div><!-- /.blog-main -->
 
-<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-<div class="sidebar-module sidebar-module-inset">
-  <blockquote>
-    <p><em>
-      In a world where death is the hunter, my friend, there is no time for regrets or doubts. There is only time for decisions.
-    </em></p>
-    <footer>Carlos Castaneda</footer>
-  </blockquote>
-</div><div>
-  <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
-  <ol id="cloud">
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/backups.html">backups</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/apache.html">Apache</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/python.html">Python</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/nginx.html">nginx</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/django.html">Django</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/virtualenv.html">virtualenv</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/centos.html">centos</a></li>
-  </ol>
-</div><div class="sidebar-module">
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <abbr class="published" title="2013-01-31T10:48:00+01:00">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Thu 31 January 2013
+    </abbr>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
+      </ol>
+    </div>
+
+<div class="sidebar-module">
   <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Elsewhere</h4>
   <ol class="list-unstyled">
     <li><a href="https://github.com/ricco386"><i class="icon-github-sign icon-large"></i>Github</a></li>
@@ -88,7 +114,10 @@
     <li><a href="http://richard.kellnerovci.sk/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
     <li><a href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
   </ol>
-</div></div><!-- /.blog-sidebar --></div><!-- /.row -->
+</div>
+  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
     </div><!--/.container -->
     <!-- End page content -->
 

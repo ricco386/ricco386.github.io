@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/</loc>
-<lastmod>2015-03-31T20:25:25-00:00</lastmod>
+<lastmod>2015-03-31T21:01:33-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/archives.html</loc>
-<lastmod>2015-03-31T20:25:25-00:00</lastmod>
+<lastmod>2015-03-31T21:01:33-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/tags.html</loc>
-<lastmod>2015-03-31T20:25:25-00:00</lastmod>
+<lastmod>2015-03-31T21:01:33-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/categories.html</loc>
-<lastmod>2015-03-31T20:25:25-00:00</lastmod>
+<lastmod>2015-03-31T21:01:33-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -48,6 +48,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://richard.kellnerovci.sk/simple-and-space-efficient-backups-with-rsnapshot.html</loc>
 <lastmod>2015-02-17T22:44:00+01:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>1</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/how-to-get-back-free-space-after-deleting-mysql-database.html</loc>
+<lastmod>2013-01-31T10:48:00+01:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>1</priority>
 </url>
@@ -104,6 +111,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://richard.kellnerovci.sk/tag/nginx.html</loc>
 <lastmod>2015-02-18T21:24:00+00:58</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/tag/mysql.html</loc>
+<lastmod>2013-01-31T10:48:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
