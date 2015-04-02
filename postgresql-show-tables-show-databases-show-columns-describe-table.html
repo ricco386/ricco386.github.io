@@ -8,7 +8,7 @@
     <meta name="keywords" content="" />
     <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
 
-    <title>Richard's Log | Apache</title>
+    <title>Richard's Log | PostgreSQL: show tables, show databases, show columns, describe table</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -24,8 +24,7 @@
   
     <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
     <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
-    <link href="http://richard.kellnerovci.sk/feeds/apache.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Tags
- RSS Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
   </head>
 
   <body>
@@ -33,59 +32,73 @@
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item" href="http://richard.kellnerovci.sk">Home</a>
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk">Home</a>
           <a class="blog-nav-item" href="http://richard.kellnerovci.sk/pages/public-pgp-key.html">My Public PGP key</a></li>
-          <a class="blog-nav-item active " href="http://richard.kellnerovci.sk/archives.html">Archives</a>
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk/archives.html">Archives</a>
         </nav>
       </div>
     </div>
 
     <div class="container">
       <div class="blog-header">
-        <h1 class="blog-title">Richard's Log: Apache</h1>
-<p class="lead blog-description">Public notepad about stuff I am currently playing with...</p>      </div>
+        <h1 class="blog-title">PostgreSQL: show tables, show databases, show columns, describe table</h1>
+<p class="lead blog-description"></p>      </div>
 <div class="row">
   <div class="col-sm-8 blog-main">
+    
     <div class="blog-post">
-      <h2 class="blog-post-title">
-        <a href="http://richard.kellnerovci.sk/serving-static-files-in-production-environment-with-django-and-apache.html" rel="bookmark" title="Permalink to Serving static files in production environment with Django and Apache">Serving static files in production environment with Django and Apache</a>
-      </h2>
-      <div class="entry-content"> <p>Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.</p> </div><!-- entry-content -->
-      <p class="blog-post-meta">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Fri 27 July 2012&nbsp;
-        <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;<a href="http://richard.kellnerovci.sk/tag/django.html">Django</a>
-        <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;<a href="http://richard.kellnerovci.sk/tag/apache.html">Apache</a>
-      </p>
+      <h2 class="blog-post-title"></h2>
+      <!--      <p class="blog-post-meta">Thu 28 March 2013</p> -->
+
+      <div class="entry-content"> <p>PostgreSQL is one of the best databases, which you can choose from when working on your project. If you are switching from MySQL, you will realise immediatelly that you are missing basic commands that you were used to in MySQL. Lets have a look at few basic commands.</p>
+<p>MySQL: <strong><code>SHOW TABLES</code></strong></p>
+<p>PostgreSQL: <strong><code>\d</code></strong></p>
+<p>PostgreSQL: <strong><code>SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';</code></strong></p>
+<hr />
+<p>MySQL: <strong><code>SHOW DATABASES</code></strong></p>
+<p>PostgreSQL: <strong><code>\l</code></strong></p>
+<p>PostgreSQL: <strong><code>SELECT datname FROM pg_database;</code></strong></p>
+<hr />
+<p>MySQL: <strong><code>SHOW COLUMNS</code></strong></p>
+<p>PostgreSQL: <strong><code>\d table</code></strong></p>
+<p>PostgreSQL: <strong><code>SELECT column_name FROM information_schema.columns WHERE table_name ='table';</code></strong></p>
+<hr />
+<p>MySQL: <strong><code>DESCRIBE TABLE</code></strong></p>
+<p>PostgreSQL: <strong><code>\d+ table</code></strong></p>
+<p>PostgreSQL: <strong><code>SELECT column_name FROM information_schema.columns WHERE table_name ='table';</code></strong></p> </div><!-- entry-content -->
+<div class="entry-comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'richardkellnerovcisk';
+    var disqus_identifier = 'postgresql-show-tables-show-databases-show-columns-describe-table.html';
+    var disqus_title = 'PostgreSQL: show tables, show databases, show columns, describe table';
+    var disqus_url = 'http://richard.kellnerovci.sk/postgresql-show-tables-show-databases-show-columns-describe-table.html';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div><!-- entry-comments -->
     </div><!-- /.blog-post -->
   
   </div><!-- /.blog-main -->
 
-<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-<div class="sidebar-module sidebar-module-inset">
-  <blockquote>
-    <p><em>
-      In a world where death is the hunter, my friend, there is no time for regrets or doubts. There is only time for decisions.
-    </em></p>
-    <footer>Carlos Castaneda</footer>
-  </blockquote>
-</div><div>
-  <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
-  <ol id="cloud">
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/php.html">PHP</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/postgresql.html">PostgreSQL</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/centos.html">centos</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/ext3.html">EXT3</a></li>
-    <li><a class="tag1" href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/nginx.html">nginx</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/virtualenv.html">virtualenv</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/conference.html">Conference</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/mac-os-x.html">Mac OS X</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/apache.html">Apache</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/backups.html">backups</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/python.html">Python</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/django.html">Django</a></li>
-  </ol>
-</div><div class="sidebar-module">
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <abbr class="published" title="2013-03-28T17:16:12+01:00">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Thu 28 March 2013
+    </abbr>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="http://richard.kellnerovci.sk/tag/postgresql.html">PostgreSQL</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
+      </ol>
+    </div>
+
+<div class="sidebar-module">
   <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Elsewhere</h4>
   <ol class="list-unstyled">
     <li><a href="https://github.com/ricco386"><i class="icon-github-sign icon-large"></i>Github</a></li>
@@ -95,7 +108,10 @@
     <li><a href="http://richard.kellnerovci.sk/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
     <li><a href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
   </ol>
-</div></div><!-- /.blog-sidebar --></div><!-- /.row -->
+</div>
+  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
     </div><!--/.container -->
     <!-- End page content -->
 

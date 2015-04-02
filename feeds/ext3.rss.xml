@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/ext3.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 30 May 2012 01:00:00 +0200</lastBuildDate><item><title>EXT3/EXT2 filesystem in Mac OS X Lion</title><link>http://richard.kellnerovci.sk/ext3ext2-filesystem-in-mac-os-x-lion.html</link><description>&lt;p&gt;While ago I needed to mount EXT3 file system in Mac OS X Lion, it doesn’t seems as a big problem as there is plenty of manuals how to do it. Unfortunately most of them are out of date. So I have decided to write down how to do it.&lt;/p&gt;
+&lt;p&gt;We will need this software:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/downloads/osxfuse/osxfuse/OSXFUSE-2.3.4.dmg"&gt;OSXFuse&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://prdownloads.sourceforge.net/fuse-ext2/fuse-ext2-0.0.7.dmg?download"&gt;Fuse-ext2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It is required to install them in this order.&lt;/p&gt;
+&lt;p&gt;Fuse-ext2 require MacFuse to work, unfortunately this one is no longer maintained and doesn’t works in Lion. OSXFuse is next generation MacFuse, but Fuse-ext2 wasn’t designed to work with it. Luckily OSXFuse has “MacFUSE Compatibility Layer”. Select this option while installing OSXFuse and you are ready to go.&lt;/p&gt;
+&lt;p&gt;Once everything is installed, try to mount EXT3 or EXT2 partition on USB key and key should automatically mount.&lt;/p&gt;
+&lt;p&gt;PS. &lt;em&gt;Disk is read only, without possibility of write because this option is unstable.&lt;/em&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Wed, 30 May 2012 01:00:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2012-05-30:ext3ext2-filesystem-in-mac-os-x-lion.html</guid><category>Mac OS X</category><category>EXT3</category></item></channel></rss>

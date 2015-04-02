@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/postgresql.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 28 Mar 2013 17:16:12 +0100</lastBuildDate><item><title>PostgreSQL: show tables, show databases, show columns, describe table</title><link>http://richard.kellnerovci.sk/postgresql-show-tables-show-databases-show-columns-describe-table.html</link><description>&lt;p&gt;PostgreSQL is one of the best databases, which you can choose from when working on your project. If you are switching from MySQL, you will realise immediatelly that you are missing basic commands that you were used to in MySQL. Lets have a look at few basic commands.&lt;/p&gt;
+&lt;p&gt;MySQL: &lt;strong&gt;&lt;code&gt;SHOW TABLES&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;\d&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;MySQL: &lt;strong&gt;&lt;code&gt;SHOW DATABASES&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;\l&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;SELECT datname FROM pg_database;&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;MySQL: &lt;strong&gt;&lt;code&gt;SHOW COLUMNS&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;\d table&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;SELECT column_name FROM information_schema.columns WHERE table_name ='table';&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;MySQL: &lt;strong&gt;&lt;code&gt;DESCRIBE TABLE&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;\d+ table&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;SELECT column_name FROM information_schema.columns WHERE table_name ='table';&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Thu, 28 Mar 2013 17:16:12 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-28:postgresql-show-tables-show-databases-show-columns-describe-table.html</guid><category>PostgreSQL</category><category>MySQL</category></item></channel></rss>
