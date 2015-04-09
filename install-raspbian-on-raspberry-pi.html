@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Richard Kellner">
+    <meta name="keywords" content="" />
+    <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
+
+    <title>Richard's Log | Install Raspbian on Raspberry Pi</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://richard.kellnerovci.sk/theme/css/blog.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+    <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk">Home</a>
+          <a class="blog-nav-item" href="http://richard.kellnerovci.sk/pages/public-pgp-key.html">My Public PGP key</a></li>
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk/archives.html">Archives</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="blog-header">
+        <h1 class="blog-title">Install Raspbian on Raspberry Pi</h1>
+<p class="lead blog-description"></p>      </div>
+<div class="row">
+  <div class="col-sm-8 blog-main">
+    
+    <div class="blog-post">
+      <h2 class="blog-post-title"></h2>
+      <!--      <p class="blog-post-meta">Thu 07 March 2013</p> -->
+
+      <div class="entry-content"> <p>Raspbian “wheezy” is optimized version of Debian for Raspberry Pi. We will talk about how to install Raspbian on SD card so it is bootable on Raspberry Pi. This guide is almost identical with official wiki, but we will also upgrade firmware and run some comparison tests. We will do all the work in Linux terminal, if you are looking for graphical environment or Windows installer I suggest <a href="http://elinux.org/RPi_Easy_SD_Card_Setup">oficial wiki</a>.</p>
+<ul>
+<li>Download Raspbian image from official page: <a href="http://www.raspberrypi.org/downloads">http://www.raspberrypi.org/downloads</a></li>
+<li>Verify downloaded file hashif it matches</li>
+</ul>
+<p><code>sha1sum ~/2013-02-09-wheezy-raspbian.zip</code></p>
+<ul>
+<li>Unzip downloaded file</li>
+</ul>
+<p><code>unzip ~/2013-02-09-wheezy-raspbian.zip</code></p>
+<ul>
+<li>List mounted devices</li>
+</ul>
+<p><code>df -h</code></p>
+<ul>
+<li>Insert SD card to computer</li>
+<li>List mounted devices again and notice which one is new</li>
+</ul>
+<p><code>df -h</code></p>
+<p>There should be new device, notice where it is mounted, for example: /dev/sdd</p>
+<ul>
+<li>Disconnect all mounted partitions (if there is more of them, you have to repeat command for all of them) </li>
+</ul>
+<p><code>umount /dev/sdd1</code></p>
+<ul>
+<li>with dd command move image to SD card. Run it as sudo</li>
+</ul>
+<p><code>sudo dd bs=4M if=~/2013-02-09-wheezy-raspbian.img of=/dev/sdd</code></p>
+<ul>
+<li>Make sure cache was cleared and remove the card</li>
+</ul>
+<p><code>sudo sync</code></p>
+<ul>
+<li>Insert SD cart to Raspberry Pi and let have some fun</li>
+</ul>
+<p>It is handy to have monitor connected to Raspberry on first boot, because there will be setup screen where you can setup basic things. One of the useful things is to resign Raspbian partition to SD card size, or start SSH on boot, so we can connect to Raspberry later on without having it connected to monitor.</p>
+<p>After login update all installed packages to newest versions.</p>
+<div class="highlight"><pre>apt-get update
+apt-get upgrade
+</pre></div>
+
+
+<p>Lets do IO operations benchmark on SD card</p>
+<div class="highlight"><pre>pi@raspberrypi ~ $ dd if=/dev/zero of=~/test.tmp bs=500K count=1024
+1024+0 records in
+1024+0 records out
+524288000 bytes (524 MB) copied, 49.9496 s, 10.5 MB/s
+pi@raspberrypi ~ $ dd if=~/test.tmp of=/dev/null bs=500K count=1024
+1024+0 records in
+1024+0 records out&lt;br&gt;524288000 bytes (524 MB) copied, 26.9565 s, 19.4 MB/s
+</pre></div>
+
+
+<p>Lets have a look at firmware version with command vcgencmd</p>
+<div class="highlight"><pre>pi@raspberrypi ~ $ vcgencmd version
+Feb 7 2013 16:46:17 
+Copyright (c) 2012 Broadcom
+version 367974 (release)
+</pre></div>
+
+
+<p>Latest firmware is available on github: <a href="https://github.com/Hexxeh/rpi-firmware">https://github.com/Hexxeh/rpi-firmware</a></p>
+<div class="highlight"><pre>sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update &amp;&amp; sudo chmod +x /usr/bin/rpi-update
+sudo rpi-update
+</pre></div>
+
+
+<p>Lets have a look at output with upgraded firmware, at the end…</p>
+<div class="highlight"><pre>pi@raspberrypi ~ $ vcgencmd version
+Mar 4 2013 22:02:46 
+Copyright (c) 2012 Broadcom
+version 374489 (release)
+pi@raspberrypi ~ $ dd if=/dev/zero of=~/test.tmp bs=500K count=1024
+1024+0 records in
+1024+0 records out
+524288000 bytes (524 MB) copied, 45.1423 s, 11.6 MB/s
+pi@raspberrypi ~ $ dd if=~/test.tmp of=/dev/null bs=500K count=1024
+1024+0 records in
+1024+0 records out
+524288000 bytes (524 MB) copied, 27.4592 s, 19.1 MB/s
+</pre></div> </div><!-- entry-content -->
+<div class="entry-comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'richardkellnerovcisk';
+    var disqus_identifier = 'install-raspbian-on-raspberry-pi.html';
+    var disqus_title = 'Install Raspbian on Raspberry Pi';
+    var disqus_url = 'http://richard.kellnerovci.sk/install-raspbian-on-raspberry-pi.html';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div><!-- entry-comments -->
+    </div><!-- /.blog-post -->
+  
+  </div><!-- /.blog-main -->
+
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <abbr class="published" title="2013-03-07T09:31:00+01:00">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Thu 07 March 2013
+    </abbr>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="http://richard.kellnerovci.sk/tag/raspberry-pi.html">Raspberry Pi</a></li>
+      </ol>
+    </div>
+
+<div class="sidebar-module">
+  <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Elsewhere</h4>
+  <ol class="list-unstyled">
+    <li><a href="https://github.com/ricco386"><i class="icon-github-sign icon-large"></i>Github</a></li>
+    <li><a href="https://twitter.com/RicCo386"><i class="icon-twitter-sign icon-large"></i>Twitter</a></li>
+    <li><a href="https://www.linkedin.com/in/richardkellner"><i class="icon-linkedin-sign icon-large"></i>LinkedIn</a></li>
+    <li><a href="https://keybase.io/ricco"><i class="icon-keybase-sign icon-large"></i>Keybase</a></li>
+    <li><a href="http://richard.kellnerovci.sk/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
+  </ol>
+</div>
+  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
+    </div><!--/.container -->
+    <!-- End page content -->
+
+    <footer class="blog-footer">
+      <p>
+        <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
+        <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+
+        &copy; <a href="http://richard.kellnerovci.sk">Richard's Log</a> Proudly powered by <a href="http://getpelican.com/">Pelican</a>
+      </p>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://richard.kellnerovci.sk/theme/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://richard.kellnerovci.sk/theme/js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//piwik.ricco.sk/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 4]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//piwik.ricco.sk/piwik.php?idsite=4" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+  </body>
+</html>
