@@ -1,5 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/php.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 08 Oct 2012 15:12:00 +0200</lastBuildDate><item><title>PHPNW 2012</title><link>http://richard.kellnerovci.sk/phpnw-2012.html</link><description>&lt;p&gt;I have been lucky and during the weekend I attended PHPNW 2012 in Manchester. I would like to express my feelings and shortly describe what it was about. Conference has started on Friday with workshops and probably most interesting was Rob Allen and Evan Coury with: Building a Zend Framework 2 Application.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/php.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 08 Mar 2013 22:49:00 +0100</lastBuildDate><item><title>Install Nginx PHP and MySQL on Raspberry Pi</title><link>http://richard.kellnerovci.sk/install-nginx-php-and-mysql-on-raspberry-pi-sk.html</link><description>&lt;p&gt;In last article we have installed Raspbian, now we can do some actual work and install Nginx, PHP and MySQL on our Raspberry Pi. Afterwards we can use it full-fledged home webserver.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install nginx php5-fpm php5-cgi php5-cli php5-common
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let’s create user and group for web server, and directory where we will store our pages. New directory has to be amended so it is accessible for new owner.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo useradd www-data
+sudo groupadd www-data
+sudo usermod -g www-data www-data
+sudo mkdir /var/www
+sudo mkdir /var/www/rasppi
+sudo chmod -R 775 /var/www
+sudo chown -R www-data:www-data /var/www
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create Nginx configuration file&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/nginx/sites-available/rasppi
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and insert following config&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="m"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="n"&gt;for&lt;/span&gt; &lt;span class="n"&gt;ipv4&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;server_name&lt;/span&gt; &lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;access_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;access&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;error_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;location&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;htm&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="nt"&gt;Parse&lt;/span&gt; &lt;span class="nt"&gt;all&lt;/span&gt; &lt;span class="nc"&gt;.php&lt;/span&gt; &lt;span class="nt"&gt;file&lt;/span&gt; &lt;span class="nt"&gt;in&lt;/span&gt; &lt;span class="nt"&gt;the&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;rasppi&lt;/span&gt; &lt;span class="nt"&gt;directory&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="nc"&gt;.php&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_split_path_info&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;.+&lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="o"&gt;.*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_pass&lt;/span&gt; &lt;span class="m"&gt;127&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;9000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_index&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;SCRIPT_FILENAME&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;fastcgi_script_name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt; &lt;span class="n"&gt;fastcgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;QUERY_STRING&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;query_string&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;REQUEST_METHOD&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;request_method&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;CONTENT_TYPE&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;content_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;CONTENT_LENGTH&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;content_length&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_intercept_errors&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_ignore_client_abort&lt;/span&gt; &lt;span class="n"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_connect_timeout&lt;/span&gt; &lt;span class="m"&gt;60&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_send_timeout&lt;/span&gt; &lt;span class="m"&gt;180&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_read_timeout&lt;/span&gt; &lt;span class="m"&gt;180&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_buffer_size&lt;/span&gt; &lt;span class="m"&gt;128&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_buffers&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt; &lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_busy_buffers_size&lt;/span&gt; &lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_temp_file_write_size&lt;/span&gt; &lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="nt"&gt;Disable&lt;/span&gt; &lt;span class="nt"&gt;viewing&lt;/span&gt; &lt;span class="nc"&gt;.htaccess&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nt"&gt;amp&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nc"&gt;.htpassword&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="nc"&gt;.ht&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;deny&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let’s allow this new config&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo ln -s /etc/nginx/sites-available/raspi /etc/nginx/sites-enabled/raspi
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We are done with Nginx settings, now we have to update php-fpm configuration, edit following file&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/php5/fpm/pool.d/www.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;find line with &lt;code&gt;listen = /var/run/php5-fpm.sock&lt;/code&gt; and replace to: &lt;code&gt;listen = 127.0.0.1:9000&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;We have to restart both services&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo service php5-fpm restart 
+sudo service nginx restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Nginx and PHP are finished and running, now we have to install MySQL database:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install mysql-server mysql-client php5-mysql
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;during the installation you should be asked for root password, if this hasn’t happened, don’t worry and set it with following command&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;mysqladmin -u root password yourSECRETrootSQLpassword
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We are done. Now we have web server with PHP and MySQL running on Raspberry Pi.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Fri, 08 Mar 2013 22:49:00 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-08:install-nginx-php-and-mysql-on-raspberry-pi-sk.html</guid><category>Raspberry Pi</category><category>nginx</category><category>PHP</category><category>MySQL</category></item><item><title>PHPNW 2012</title><link>http://richard.kellnerovci.sk/phpnw-2012.html</link><description>&lt;p&gt;I have been lucky and during the weekend I attended PHPNW 2012 in Manchester. I would like to express my feelings and shortly describe what it was about. Conference has started on Friday with workshops and probably most interesting was Rob Allen and Evan Coury with: Building a Zend Framework 2 Application.&lt;/p&gt;
 &lt;p&gt;On Saturday morning official part was opened by Ade Oshineye with Developer Experience, API Design and Craft Skills. He explained how he had worked on Google Maps API and what should developers think about when designing APIs. During the day I have checked several speeches, and I will mention at two of them. Effective Code Reviews, by Sebastian Marek, how to automate tasks before we start to review code after other developers and what to focus on so this review has meaning. At the end Ian Barber from Google spoke how to manage large amount of data from live stream in speech Building a Firehose. After all speeches there was short word by sponsors and we all went for a beer, to have a technical and less technical discussions…&lt;/p&gt;
 &lt;p&gt;Sunday was shorter, but still very interesting. John Cleveley was speaking how did they create a responsive page for BBC and for the rest of the day I have decided to learn theories, I went to listen to Harrie Verveer how to Recognizing Smelly Code. And at the end I watched The Art of Application Logging, by Ben Waine.&lt;/p&gt;
 &lt;p&gt;Appart from news that happened in PHP world lectures were more or less advanced. Therefore I think conference was addition and I can recommend next year to any PHP programmer. At the end I will just mention that all speeches were recorded, so hopefully they will be available on &lt;a href="http://conference.phpnw.org.uk/phpnw12/" title="PHPNW 2012"&gt;official page&lt;/a&gt; soon.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Mon, 08 Oct 2012 15:12:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2012-10-08:phpnw-2012.html</guid><category>PHP</category><category>Conference</category></item></channel></rss>
