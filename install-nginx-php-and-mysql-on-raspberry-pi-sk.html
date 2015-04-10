@@ -73,8 +73,8 @@ sudo chown -R www-data:www-data /var/www
 
 <p>and insert following config</p>
 <div class="highlight"><pre><span class="nt">server</span> <span class="p">{</span>
-<span class="err">   </span> <span class="n">listen</span> <span class="m">80</span><span class="p">;</span> <span class="err">##</span> <span class="n">listen</span> <span class="n">for</span> <span class="n">ipv4</span>
-<span class="err">   </span> <span class="n">server_name</span> <span class="n">rasppi</span><span class="p">;</span>
+<span class="err">   </span> <span class="n">listen</span> <span class="m">80</span><span class="p">;</span> <span class="err">#</span> <span class="n">listen</span> <span class="n">for</span> <span class="n">ipv4</span>
+<span class="err">   </span> <span class="n">server_name</span> <span class="n">rasppi</span><span class="p">;</span> <span class="err">#</span> <span class="n">configure</span> <span class="n">your</span> <span class="n">Raspberry</span> <span class="n">Pi</span> <span class="n">IP</span> <span class="n">here</span>
 
 <span class="err">   </span> <span class="n">access_log</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">rasppi</span><span class="o">.</span><span class="n">access</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
 <span class="err">   </span> <span class="n">error_log</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">rasppi</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
@@ -86,9 +86,9 @@ sudo chown -R www-data:www-data /var/www
 <span class="err">   </span> <span class="err">   </span> <span class="n">index</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">htm</span><span class="p">;</span>
 <span class="err">   </span> <span class="p">}</span>
 
-<span class="err">   </span> <span class="err">##</span> <span class="nt">Parse</span> <span class="nt">all</span> <span class="nc">.php</span> <span class="nt">file</span> <span class="nt">in</span> <span class="nt">the</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">www</span><span class="o">/</span><span class="nt">rasppi</span> <span class="nt">directory</span>
-<span class="err">   </span> <span class="nt">location</span> <span class="o">~</span> <span class="err">\\</span><span class="nc">.php</span><span class="o">$</span> <span class="p">{</span>
-<span class="err">   </span> <span class="err">   </span> <span class="n">fastcgi_split_path_info</span> <span class="o">^</span><span class="p">(</span><span class="o">.+</span><span class="err">\\</span><span class="o">.</span><span class="n">php</span><span class="p">)(</span><span class="o">.*</span><span class="p">)</span><span class="err">$</span><span class="p">;</span>
+<span class="err">   </span> <span class="err">#</span> <span class="nt">Parse</span> <span class="nt">all</span> <span class="nc">.php</span> <span class="nt">file</span> <span class="nt">in</span> <span class="nt">the</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">www</span><span class="o">/</span><span class="nt">rasppi</span> <span class="nt">directory</span>
+<span class="err">   </span> <span class="nt">location</span> <span class="o">~</span> <span class="err">\</span><span class="nc">.php</span><span class="o">$</span> <span class="p">{</span>
+<span class="err">   </span> <span class="err">   </span> <span class="n">fastcgi_split_path_info</span> <span class="o">^</span><span class="p">(</span><span class="o">.+</span><span class="err">\</span><span class="o">.</span><span class="n">php</span><span class="p">)(</span><span class="o">.*</span><span class="p">)</span><span class="err">$</span><span class="p">;</span>
 <span class="err">   </span> <span class="err">   </span> <span class="n">fastcgi_pass</span> <span class="m">127</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">1</span><span class="o">:</span><span class="m">9000</span><span class="p">;</span>
 <span class="err">   </span> <span class="err">   </span> <span class="n">fastcgi_index</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="p">;</span>
 <span class="err">   </span> <span class="err">   </span> <span class="n">fastcgi_param</span> <span class="n">SCRIPT_FILENAME</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">rasppi</span><span class="err">$</span><span class="n">fastcgi_script_name</span><span class="p">;</span>
@@ -108,8 +108,8 @@ sudo chown -R www-data:www-data /var/www
 <span class="err">   </span> <span class="err">   </span> <span class="n">fastcgi_temp_file_write_size</span> <span class="m">256</span><span class="n">k</span><span class="p">;</span>
 <span class="err">   </span> <span class="p">}</span>
 
-<span class="err">   </span> <span class="err">##</span> <span class="nt">Disable</span> <span class="nt">viewing</span> <span class="nc">.htaccess</span> <span class="o">&amp;</span><span class="nt">amp</span><span class="o">;</span> <span class="nc">.htpassword</span>
-<span class="err">   </span> <span class="nt">location</span> <span class="o">~</span> <span class="o">/</span><span class="err">\\</span><span class="nc">.ht</span> <span class="p">{</span>
+<span class="err">   </span> <span class="err">#</span> <span class="nt">Disable</span> <span class="nt">viewing</span> <span class="nc">.htaccess</span> <span class="o">&amp;</span><span class="nt">amp</span><span class="o">;</span> <span class="nc">.htpassword</span>
+<span class="err">   </span> <span class="nt">location</span> <span class="o">~</span> <span class="o">/</span><span class="err">\</span><span class="nc">.ht</span> <span class="p">{</span>
 <span class="err">   </span> <span class="err">   </span> <span class="n">deny</span> <span class="n">all</span><span class="p">;</span>
 <span class="err">   </span> <span class="p">}</span>
 <span class="err">}</span>
@@ -117,7 +117,7 @@ sudo chown -R www-data:www-data /var/www
 
 
 <p>Let’s allow this new config</p>
-<div class="highlight"><pre>sudo ln -s /etc/nginx/sites-available/raspi /etc/nginx/sites-enabled/raspi
+<div class="highlight"><pre>sudo ln -s /etc/nginx/sites-available/rasppi /etc/nginx/sites-enabled/rasppi
 </pre></div>
 
 
