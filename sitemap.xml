@@ -5,14 +5,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/</loc>
-<lastmod>2015-04-12T12:12:06-00:00</lastmod>
+<lastmod>2015-04-12T23:28:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/archives.html</loc>
-<lastmod>2015-04-12T12:12:06-00:00</lastmod>
+<lastmod>2015-04-12T23:28:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -22,6 +22,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2015-02-17T22:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/minimize-raspbian-image.html</loc>
+<lastmod>2015-04-12T22:53:00+02:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>1</priority>
 </url>
 
 <url>
@@ -110,7 +117,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/category/blog.html</loc>
-<lastmod>2015-04-12T10:53:00+00:58</lastmod>
+<lastmod>2015-04-12T22:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -152,7 +159,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/raspberry-pi.html</loc>
-<lastmod>2015-04-12T10:53:00+00:58</lastmod>
+<lastmod>2015-04-12T22:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -222,14 +229,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/raspbian.html</loc>
-<lastmod>2013-03-07T09:31:00+00:58</lastmod>
+<lastmod>2015-04-12T22:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/author/richard-kellner.html</loc>
-<lastmod>2015-04-12T10:53:00+00:58</lastmod>
+<lastmod>2015-04-12T22:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
