@@ -5,34 +5,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/</loc>
-<lastmod>2015-04-10T21:29:23-00:00</lastmod>
+<lastmod>2015-04-12T12:12:06-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/archives.html</loc>
-<lastmod>2015-04-10T21:29:23-00:00</lastmod>
+<lastmod>2015-04-12T12:12:06-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://richard.kellnerovci.sk/tags.html</loc>
-<lastmod>2015-04-10T21:29:23-00:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.7</priority>
-</url>
-
-<url>
-<loc>http://richard.kellnerovci.sk/categories.html</loc>
-<lastmod>2015-04-10T21:29:23-00:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.7</priority>
-</url>
-
-<url>
-<loc>http://richard.kellnerovci.sk/pages/public-pgp-key.html</loc>
+<loc>http://richard.kellnerovci.sk/public-pgp-key.html</loc>
 <lastmod>2015-02-17T22:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -40,7 +26,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/opensource-weekend-in-bratilsava-2015.html</loc>
-<lastmod>2015-04-10T21:26:00+02:00</lastmod>
+<lastmod>2015-04-11T00:22:00+02:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>1</priority>
 </url>
@@ -67,8 +53,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://richard.kellnerovci.sk/install-nginx-php-and-mysql-on-raspberry-pi-sk.html</loc>
-<lastmod>2013-03-08T22:49:00+01:00</lastmod>
+<loc>http://richard.kellnerovci.sk/install-nginx-php-and-mysql-on-raspberry-pi.html</loc>
+<lastmod>2015-04-12T10:53:00+02:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>1</priority>
 </url>
@@ -83,6 +69,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://richard.kellnerovci.sk/how-to-get-back-free-space-after-deleting-mysql-database.html</loc>
 <lastmod>2013-01-31T10:48:00+01:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>1</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/how-to-start-django-project-correctly.html</loc>
+<lastmod>2012-11-30T23:33:02+01:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>1</priority>
 </url>
@@ -117,21 +110,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/category/blog.html</loc>
-<lastmod>2015-04-10T21:26:00+00:58</lastmod>
+<lastmod>2015-04-12T10:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/virtualenv.html</loc>
-<lastmod>2012-06-23T16:37:00+00:58</lastmod>
+<lastmod>2012-11-30T23:33:02+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/conference.html</loc>
-<lastmod>2015-04-10T21:26:00+00:58</lastmod>
+<lastmod>2015-04-11T00:22:00+00:58</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/tag/git.html</loc>
+<lastmod>2012-11-30T23:33:02+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -152,7 +152,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/raspberry-pi.html</loc>
-<lastmod>2013-03-08T22:49:00+00:58</lastmod>
+<lastmod>2015-04-12T10:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -173,21 +173,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/django.html</loc>
-<lastmod>2012-07-27T17:13:00+00:58</lastmod>
+<lastmod>2012-11-30T23:33:02+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/nginx.html</loc>
-<lastmod>2015-02-18T21:24:00+00:58</lastmod>
+<lastmod>2015-04-12T10:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/mysql.html</loc>
-<lastmod>2013-03-28T17:16:12+00:58</lastmod>
+<lastmod>2015-04-12T10:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -215,14 +215,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/tag/php.html</loc>
-<lastmod>2013-03-08T22:49:00+00:58</lastmod>
+<lastmod>2015-04-12T10:53:00+00:58</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/tag/raspbian.html</loc>
+<lastmod>2013-03-07T09:31:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/author/richard-kellner.html</loc>
-<lastmod>2015-04-10T21:26:00+00:58</lastmod>
+<lastmod>2015-04-12T10:53:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>

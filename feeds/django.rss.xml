@@ -1,5 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/django.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 27 Jul 2012 17:13:00 +0200</lastBuildDate><item><title>Serving static files in production environment with Django and Apache</title><link>http://richard.kellnerovci.sk/serving-static-files-in-production-environment-with-django-and-apache.html</link><description>&lt;p&gt;Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/django.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 30 Nov 2012 23:33:02 +0100</lastBuildDate><item><title>How to start Django project correctly</title><link>http://richard.kellnerovci.sk/how-to-start-django-project-correctly.html</link><description>&lt;p&gt;To start project on solid foundation, we have to do several things. In this article we will talk about what is required to be done to have Django project that is independent on packages in operating system, is versioned with Git, has database migrations. We will also scratch how to easily create our own functions for automatic deployment and testing on local or remote server.&lt;/p&gt;
+&lt;p&gt;We have already spoke about some of this topics so in this article they will be tied together with some extra explanations. At the end we will have:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fully functional Django project&lt;/li&gt;
+&lt;li&gt;All files will be under Git control&lt;/li&gt;
+&lt;li&gt;Project will be independent on system packages&lt;/li&gt;
+&lt;li&gt;Framework upon which we can build automatic deployment and testing&lt;/li&gt;
+&lt;li&gt;Automatic DB migrations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All of this will give us solid foundation for any Django project, either you are doing your own project or you would like to collaborate with other developers.&lt;/p&gt;
+&lt;p&gt;Lets create directory with our project:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;mkdir projectX
+cd projectX
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If we would install Django to operating system globally, it will be used globally for all packages. We just want to have only packages that are required for our project and we will use virtualenv for it. There are couple reasons for it, for example if we want to update some packages in project we are able to deploy test instance in separate directory and we can tune possible problems there. Even more important is situation when there are multiple collaborators on project, that they will have all the same dependencies, never the less what they have installed globaly. &lt;/p&gt;
+&lt;p&gt;Instructions how to install virtualenv have been explained in previous &lt;a href="/how-to-start-with-virtualenv.html"&gt;article&lt;/a&gt;. For this article purpose, it is expected that you have installed them. We can initialise virtual environment:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;virtualenv envs
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Activate virtual environment:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;source envs/bin/activate
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can install Django (in the time of writing this article, recent version is 1.4.2)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install django
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Start new project&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;django-admin.py startproject x
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Django will create following directories structure: (. is our directory projectX)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;.
+|-- envs
+`-- x
+    |-- manage.py
+    `-- x
+        |-- __init__.py
+        |-- settings.py
+        |-- urls.py
+        `-- wsgi.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next step is voluntary, and more my personal preference to remove one extra directory, if you have django installed globally you can start project first and afterwards create virtual environment. Both cases will work fine, my preference is following (. is our directory projectX):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;.
+|-- envs
+|-- manage.py
+`-- x
+    |-- __init__.py
+    |-- settings.py
+    |-- urls.py
+    `-- wsgi.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We have to configure database in settings.py, otherwise we won’t be able to run project and commands will end with error.&lt;/p&gt;
+&lt;p&gt;In root directory we will create file .gitignore, reason for this is that we don’t want git to manage files in virtual environments. Installed packages shouldn’t be pard of version control. Content of the file is files and directories that shall be ignored, in our case:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;envs
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let’s initialize git:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;git init
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Add existing files and do you first commit.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;git add .
+git commit
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For automatic deployment and testing I recommend Fabric library&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install fabric
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Fabric is expecting file &lt;code&gt;fabfile.py&lt;/code&gt;, which will contain actions. Create file in root directory of the project&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fabric.api&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;local&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;prepare_deployment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;branch_name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;python manage.py test auth&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;git add -p &amp;amp;&amp;amp; git commit&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;git checkout master &amp;amp;&amp;amp; git merge &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;branch_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can create sequence of steps, that we would like to execute, so we don’t forget anything. Fabric is working with standard python code so we can write almost anything. In our case before commit into git we run tests for auth application. I wanted to show how can automatically tests be run before commit, so we have clean code in git that was already tested. &lt;/p&gt;
+&lt;p&gt;For database migrations we will use South library. This library will help to create or update database without writing any SQL queries. Changes in models are tracked automatically and with help of migration files, which are generated by South, we can move forward and also backward in the database.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install south
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Before we can use it in our project it has to be added into INSTALLED_APS in ‘’settings.py’’. Notice that only now we execute our first database sync:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python manage.py syncdb
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Reason for this is that South will amend DB as it needs, and also because South is installed from the beginning and all migrations are recorded and can be done via South.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Fri, 30 Nov 2012 23:33:02 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2012-11-30:how-to-start-django-project-correctly.html</guid><category>Django</category><category>git</category><category>virtualenv</category></item><item><title>Serving static files in production environment with Django and Apache</title><link>http://richard.kellnerovci.sk/serving-static-files-in-production-environment-with-django-and-apache.html</link><description>&lt;p&gt;Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.&lt;/p&gt;
 &lt;p&gt;In production environment static files should be allways send by webserver. In order to manage this, we need to collect static files and make sure that they are served by webserver. In our case we will show it on Apache webserver configuration (but same applies for other webservers).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;settings.py&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;STATIC_ROOT = &amp;#39;/var/www/localhost/htdocs/mysite/static/&amp;#39;

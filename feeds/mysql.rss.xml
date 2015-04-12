@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/mysql.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 28 Mar 2013 17:16:12 +0100</lastBuildDate><item><title>PostgreSQL: show tables, show databases, show columns, describe table</title><link>http://richard.kellnerovci.sk/postgresql-show-tables-show-databases-show-columns-describe-table.html</link><description>&lt;p&gt;PostgreSQL is one of the best databases, which you can choose from when working on your project. If you are switching from MySQL, you will realise immediatelly that you are missing basic commands that you were used to in MySQL. Lets have a look at few basic commands.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/mysql.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 12 Apr 2015 10:53:00 +0200</lastBuildDate><item><title>PostgreSQL: show tables, show databases, show columns, describe table</title><link>http://richard.kellnerovci.sk/postgresql-show-tables-show-databases-show-columns-describe-table.html</link><description>&lt;p&gt;PostgreSQL is one of the best databases, which you can choose from when working on your project. If you are switching from MySQL, you will realise immediatelly that you are missing basic commands that you were used to in MySQL. Lets have a look at few basic commands.&lt;/p&gt;
 &lt;p&gt;MySQL: &lt;strong&gt;&lt;code&gt;SHOW TABLES&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;\d&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -14,31 +14,30 @@
 &lt;hr /&gt;
 &lt;p&gt;MySQL: &lt;strong&gt;&lt;code&gt;DESCRIBE TABLE&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;\d+ table&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;SELECT column_name FROM information_schema.columns WHERE table_name ='table';&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Thu, 28 Mar 2013 17:16:12 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-28:postgresql-show-tables-show-databases-show-columns-describe-table.html</guid><category>PostgreSQL</category><category>MySQL</category></item><item><title>Install Nginx PHP and MySQL on Raspberry Pi</title><link>http://richard.kellnerovci.sk/install-nginx-php-and-mysql-on-raspberry-pi-sk.html</link><description>&lt;p&gt;In last article we have installed Raspbian, now we can do some actual work and install Nginx, PHP and MySQL on our Raspberry Pi. Afterwards we can use it full-fledged home webserver.&lt;/p&gt;
+&lt;p&gt;PostgreSQL: &lt;strong&gt;&lt;code&gt;SELECT column_name FROM information_schema.columns WHERE table_name ='table';&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Thu, 28 Mar 2013 17:16:12 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-28:postgresql-show-tables-show-databases-show-columns-describe-table.html</guid><category>PostgreSQL</category><category>MySQL</category></item><item><title>Install Nginx PHP and MySQL on Raspberry Pi</title><link>http://richard.kellnerovci.sk/install-nginx-php-and-mysql-on-raspberry-pi.html</link><description>&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;2015-04-12&lt;/strong&gt;: Article has been updated with minor improvements and fixed steps to match current installation workflow.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Previously we have &lt;a href="/install-raspbian-on-raspberry-pi.html"&gt;installed Raspbian&lt;/a&gt;, now we can do some actual work and install Nginx, PHP and MySQL on our Raspberry Pi. Afterwards we can use our Raspberry Pi as full-fledged home webserver.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install nginx php5-fpm php5-cgi php5-cli php5-common
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Let’s create user and group for web server, and directory where we will store our pages. New directory has to be amended so it is accessible for new owner.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;sudo useradd www-data
-sudo groupadd www-data
-sudo usermod -g www-data www-data
-sudo mkdir /var/www
-sudo mkdir /var/www/rasppi
+&lt;p&gt;If you open the browser and go to your Raspberry Pi IP address, you will see the Welcome to Nginx site. Let’s create our own. We need a directory where we will store our pages, new directory has to be amended so it is accessible for Nginx.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo mkdir -p /var/www/rasppi
 sudo chmod -R 775 /var/www
 sudo chown -R www-data:www-data /var/www
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Create Nginx configuration file&lt;/p&gt;
+&lt;p&gt;Create Nginx configuration file.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/nginx/sites-available/rasppi
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;and insert following config&lt;/p&gt;
+&lt;p&gt;and insert following config. You have to update it with IP address of your Raspberry Pi.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="m"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="n"&gt;for&lt;/span&gt; &lt;span class="n"&gt;ipv4&lt;/span&gt;
-&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;server_name&lt;/span&gt; &lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="m"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="n"&gt;for&lt;/span&gt; &lt;span class="n"&gt;ipv4&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;server_name&lt;/span&gt; &lt;span class="m"&gt;127&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Add&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="n"&gt;Raspberry&lt;/span&gt; &lt;span class="n"&gt;Pi&lt;/span&gt; &lt;span class="n"&gt;IP&lt;/span&gt; &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="n"&gt;here&lt;/span&gt;
 
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;access_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;access&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;error_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -50,9 +49,9 @@ sudo chown -R www-data:www-data /var/www
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;htm&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="nt"&gt;Parse&lt;/span&gt; &lt;span class="nt"&gt;all&lt;/span&gt; &lt;span class="nc"&gt;.php&lt;/span&gt; &lt;span class="nt"&gt;file&lt;/span&gt; &lt;span class="nt"&gt;in&lt;/span&gt; &lt;span class="nt"&gt;the&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;rasppi&lt;/span&gt; &lt;span class="nt"&gt;directory&lt;/span&gt;
-&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="nc"&gt;.php&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_split_path_info&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;.+&lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="o"&gt;.*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="nt"&gt;Parse&lt;/span&gt; &lt;span class="nt"&gt;all&lt;/span&gt; &lt;span class="nc"&gt;.php&lt;/span&gt; &lt;span class="nt"&gt;file&lt;/span&gt; &lt;span class="nt"&gt;in&lt;/span&gt; &lt;span class="nt"&gt;the&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;rasppi&lt;/span&gt; &lt;span class="nt"&gt;directory&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nc"&gt;.php&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_split_path_info&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;.+&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="o"&gt;.*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_pass&lt;/span&gt; &lt;span class="m"&gt;127&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;9000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_index&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;SCRIPT_FILENAME&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rasppi&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;fastcgi_script_name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -72,16 +71,17 @@ sudo chown -R www-data:www-data /var/www
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;fastcgi_temp_file_write_size&lt;/span&gt; &lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="nt"&gt;Disable&lt;/span&gt; &lt;span class="nt"&gt;viewing&lt;/span&gt; &lt;span class="nc"&gt;.htaccess&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nt"&gt;amp&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nc"&gt;.htpassword&lt;/span&gt;
-&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="nc"&gt;.ht&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="nt"&gt;Disable&lt;/span&gt; &lt;span class="nt"&gt;viewing&lt;/span&gt; &lt;span class="nc"&gt;.htaccess&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nt"&gt;amp&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nc"&gt;.htpassword&lt;/span&gt;
+&lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nc"&gt;.ht&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="n"&gt;deny&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;   &lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="err"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Let’s allow this new config&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;sudo ln -s /etc/nginx/sites-available/raspi /etc/nginx/sites-enabled/raspi
+&lt;p&gt;Let’s allow this new config and disable default one.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo ln -s /etc/nginx/sites-available/rasppi /etc/nginx/sites-enabled/rasppi
+sudo rm /etc/nginx/sites-enabled/default
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -91,13 +91,20 @@ sudo chown -R www-data:www-data /var/www
 
 
 &lt;p&gt;find line with &lt;code&gt;listen = /var/run/php5-fpm.sock&lt;/code&gt; and replace to: &lt;code&gt;listen = 127.0.0.1:9000&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Create index page with PHP info so we are sure that everything works&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class="nb"&gt;phpinfo&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="cp"&gt;?&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;We have to restart both services&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo service php5-fpm restart 
 sudo service nginx restart
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Nginx and PHP are finished and running, now we have to install MySQL database:&lt;/p&gt;
+&lt;p&gt;Nginx and PHP are finished and running, open your browser and check it out. You should see the PHP info page displaying your Raspberry is running PHP 5.4. And we can install MySQL database:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install mysql-server mysql-client php5-mysql
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -107,7 +114,7 @@ sudo service nginx restart
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;We are done. Now we have web server with PHP and MySQL running on Raspberry Pi.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Fri, 08 Mar 2013 22:49:00 +0100</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-08:install-nginx-php-and-mysql-on-raspberry-pi-sk.html</guid><category>Raspberry Pi</category><category>nginx</category><category>PHP</category><category>MySQL</category></item><item><title>How to get back free space after deleting MySQL database</title><link>http://richard.kellnerovci.sk/how-to-get-back-free-space-after-deleting-mysql-database.html</link><description>&lt;p&gt;One of the MySQL characteristics when using InnoDB is, if you delete database, MySQL is not able to return empty space back. If you have small databases you probably didnt even noticed it. However if your databases have several GB, you probably wish to get it back.&lt;/p&gt;
+&lt;p&gt;We are done. Now we have web server with PHP and MySQL running on Raspberry Pi.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Sun, 12 Apr 2015 10:53:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-08:install-nginx-php-and-mysql-on-raspberry-pi.html</guid><category>Raspberry Pi</category><category>Nginx</category><category>PHP</category><category>MySQL</category></item><item><title>How to get back free space after deleting MySQL database</title><link>http://richard.kellnerovci.sk/how-to-get-back-free-space-after-deleting-mysql-database.html</link><description>&lt;p&gt;One of the MySQL characteristics when using InnoDB is, if you delete database, MySQL is not able to return empty space back. If you have small databases you probably didnt even noticed it. However if your databases have several GB, you probably wish to get it back.&lt;/p&gt;
 &lt;p&gt;Good news is, if you import your DB back, MySQL will use disk space, that it has already taken. So lets set MySQL in a way that we will be able to get back our disk space once we delete the database. InnoDB databases are not able to reduce file ibdata (standard directory in Fedore is situated in /var/lib/mysql). To get disk space back we will have to delete this file, but first lets follow this steps:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;

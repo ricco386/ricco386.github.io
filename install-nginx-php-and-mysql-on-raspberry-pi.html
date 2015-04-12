@@ -33,7 +33,7 @@
       <div class="container">
         <nav class="blog-nav">
           <a class="blog-nav-item " href="http://richard.kellnerovci.sk">Home</a>
-          <a class="blog-nav-item" href="http://richard.kellnerovci.sk/pages/public-pgp-key.html">My Public PGP key</a></li>
+          <a class="blog-nav-item" href="http://richard.kellnerovci.sk/public-pgp-key.html">My Public PGP key</a>
           <a class="blog-nav-item " href="http://richard.kellnerovci.sk/archives.html">Archives</a>
         </nav>
       </div>
@@ -50,31 +50,30 @@
       <h2 class="blog-post-title"></h2>
       <!--      <p class="blog-post-meta">Fri 08 March 2013</p> -->
 
-      <div class="entry-content"> <p>In last article we have installed Raspbian, now we can do some actual work and install Nginx, PHP and MySQL on our Raspberry Pi. Afterwards we can use it full-fledged home webserver.</p>
+      <div class="entry-content"> <blockquote>
+<p><strong>2015-04-12</strong>: Article has been updated with minor improvements and fixed steps to match current installation workflow.</p>
+</blockquote>
+<p>Previously we have <a href="/install-raspbian-on-raspberry-pi.html">installed Raspbian</a>, now we can do some actual work and install Nginx, PHP and MySQL on our Raspberry Pi. Afterwards we can use our Raspberry Pi as full-fledged home webserver.</p>
 <div class="highlight"><pre>sudo apt-get install nginx php5-fpm php5-cgi php5-cli php5-common
 </pre></div>
 
 
-<p>Let’s create user and group for web server, and directory where we will store our pages. New directory has to be amended so it is accessible for new owner.</p>
-<div class="highlight"><pre>sudo useradd www-data
-sudo groupadd www-data
-sudo usermod -g www-data www-data
-sudo mkdir /var/www
-sudo mkdir /var/www/rasppi
+<p>If you open the browser and go to your Raspberry Pi IP address, you will see the Welcome to Nginx site. Let’s create our own. We need a directory where we will store our pages, new directory has to be amended so it is accessible for Nginx.</p>
+<div class="highlight"><pre>sudo mkdir -p /var/www/rasppi
 sudo chmod -R 775 /var/www
 sudo chown -R www-data:www-data /var/www
 </pre></div>
 
 
-<p>Create Nginx configuration file</p>
+<p>Create Nginx configuration file.</p>
 <div class="highlight"><pre>sudo vi /etc/nginx/sites-available/rasppi
 </pre></div>
 
 
-<p>and insert following config</p>
+<p>and insert following config. You have to update it with IP address of your Raspberry Pi.</p>
 <div class="highlight"><pre><span class="nt">server</span> <span class="p">{</span>
 <span class="err">   </span> <span class="n">listen</span> <span class="m">80</span><span class="p">;</span> <span class="err">#</span> <span class="n">listen</span> <span class="n">for</span> <span class="n">ipv4</span>
-<span class="err">   </span> <span class="n">server_name</span> <span class="n">rasppi</span><span class="p">;</span> <span class="err">#</span> <span class="n">configure</span> <span class="n">your</span> <span class="n">Raspberry</span> <span class="n">Pi</span> <span class="n">IP</span> <span class="n">here</span>
+<span class="err">   </span> <span class="n">server_name</span> <span class="m">127</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">1</span> <span class="n">rasppi</span><span class="p">;</span> <span class="err">#</span> <span class="n">Add</span> <span class="n">your</span> <span class="n">Raspberry</span> <span class="n">Pi</span> <span class="n">IP</span> <span class="n">address</span> <span class="n">here</span>
 
 <span class="err">   </span> <span class="n">access_log</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">rasppi</span><span class="o">.</span><span class="n">access</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
 <span class="err">   </span> <span class="n">error_log</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">rasppi</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
@@ -116,8 +115,9 @@ sudo chown -R www-data:www-data /var/www
 </pre></div>
 
 
-<p>Let’s allow this new config</p>
+<p>Let’s allow this new config and disable default one.</p>
 <div class="highlight"><pre>sudo ln -s /etc/nginx/sites-available/rasppi /etc/nginx/sites-enabled/rasppi
+sudo rm /etc/nginx/sites-enabled/default
 </pre></div>
 
 
@@ -127,13 +127,20 @@ sudo chown -R www-data:www-data /var/www
 
 
 <p>find line with <code>listen = /var/run/php5-fpm.sock</code> and replace to: <code>listen = 127.0.0.1:9000</code></p>
+<p>Create index page with PHP info so we are sure that everything works</p>
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nb">phpinfo</span><span class="p">();</span>
+<span class="cp">?&gt;</span>
+</pre></div>
+
+
 <p>We have to restart both services</p>
 <div class="highlight"><pre>sudo service php5-fpm restart 
 sudo service nginx restart
 </pre></div>
 
 
-<p>Nginx and PHP are finished and running, now we have to install MySQL database:</p>
+<p>Nginx and PHP are finished and running, open your browser and check it out. You should see the PHP info page displaying your Raspberry is running PHP 5.4. And we can install MySQL database:</p>
 <div class="highlight"><pre>sudo apt-get install mysql-server mysql-client php5-mysql
 </pre></div>
 
@@ -148,9 +155,9 @@ sudo service nginx restart
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'richardkellnerovcisk';
-    var disqus_identifier = 'install-nginx-php-and-mysql-on-raspberry-pi-sk.html';
+    var disqus_identifier = 'install-nginx-php-and-mysql-on-raspberry-pi.html';
     var disqus_title = 'Install Nginx PHP and MySQL on Raspberry Pi';
-    var disqus_url = 'http://richard.kellnerovci.sk/install-nginx-php-and-mysql-on-raspberry-pi-sk.html';
+    var disqus_url = 'http://richard.kellnerovci.sk/install-nginx-php-and-mysql-on-raspberry-pi.html';
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -172,7 +179,7 @@ sudo service nginx restart
       <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
       <ol class="list-unstyled">
         <li><a href="http://richard.kellnerovci.sk/tag/raspberry-pi.html">Raspberry Pi</a></li>
-        <li><a href="http://richard.kellnerovci.sk/tag/nginx.html">nginx</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/nginx.html">Nginx</a></li>
         <li><a href="http://richard.kellnerovci.sk/tag/php.html">PHP</a></li>
         <li><a href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
       </ol>
@@ -197,10 +204,7 @@ sudo service nginx restart
 
     <footer class="blog-footer">
       <p>
-        <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
-        <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
-
-        &copy; <a href="http://richard.kellnerovci.sk">Richard's Log</a> Proudly powered by <a href="http://getpelican.com/">Pelican</a>
+        <a href="http://richard.kellnerovci.sk">Richard's Log</a> Proudly powered by <a href="http://getpelican.com/">Pelican</a>
       </p>
     </footer>
 
