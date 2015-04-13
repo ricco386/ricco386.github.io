@@ -150,4 +150,4 @@ sudo service nginx restart
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;We are done. Now we have web server with PHP and MySQL running on Raspberry Pi.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Sun, 12 Apr 2015 10:53:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-08:install-nginx-php-and-mysql-on-raspberry-pi.html</guid><category>Raspberry Pi</category><category>Nginx</category><category>PHP</category><category>MySQL</category></item></channel></rss>
+&lt;p&gt;We are done. Now we have web server with PHP and MySQL running on Raspberry Pi.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Sun, 12 Apr 2015 10:53:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2013-03-08:install-nginx-php-and-mysql-on-raspberry-pi.html</guid><category>Raspberry Pi</category><category>Raspbian</category><category>Nginx</category><category>PHP</category><category>MySQL</category></item></channel></rss>

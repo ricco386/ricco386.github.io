@@ -8,7 +8,7 @@
     <meta name="keywords" content="" />
     <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
 
-    <title>Richard's Log | Minimized Raspbian image (no X server) with SD card backup</title>
+    <title>Richard's Log | Install Ludolph on Raspberry Pi</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -41,78 +41,84 @@
 
     <div class="container">
       <div class="blog-header">
-        <h1 class="blog-title">Minimized Raspbian image (no X server) with SD card backup</h1>
+        <h1 class="blog-title">Install Ludolph on Raspberry Pi</h1>
 <p class="lead blog-description"></p>      </div>
 <div class="row">
   <div class="col-sm-8 blog-main">
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Sun 12 April 2015</p> -->
+      <!--      <p class="blog-post-meta">Mon 13 April 2015</p> -->
 
-      <div class="entry-content"> <p>Most of the time I am using Raspbian only in command line so I’ve decided to create a minimal image, with removed X server and other unnecessary stuff that is not needed for a server. </p>
-<p>You might want to ask why to remove all the stuff when SD cards are cheap today? One reason is that with less packages there is lesser probability to have bugs in the system and other reason is that updates will take less time, as I don’t need to update packages that I don’t need.</p>
-<p>Remove everything related to: X server, LXDE, Openbox, GTK, Alsa and TTF fonts. It will also remove the packages omxplayer, nano (vim rulez :), tsconf (for touch screens) and scratch (a programming environment aimed for kids).</p>
-<div class="highlight"><pre>sudo apt-get purge xserver* x11-common x11-utils x11-xkb-utils x11-xserver-utils xarchiver xauth xkb-data console-setup xinit lightdm libx{composite,cb,cursor,damage,dmcp,ext,font,ft,i,inerama,kbfile,klavier,mu,pm,randr,render,res,t,xf86}* lxde* lx{input,menu-data,panel,polkit,randr,session,session-edit,shortcut,task,terminal} obconf openbox gtk* libgtk* alsa* nano scratch tsconf desktop-file-utils omxplayer
-sudo apt-get autoremove
-sudo apt-get autoclean
-sudo apt-get clean
+      <div class="entry-content"> <p><a href="https://github.com/erigones/Ludolph">Ludolph</a> is Jabber Bot with <a href="http://www.zabbix.com/">Zabbix</a> support, it is lightweight and has very few dependencies, therefore ideal to run on Raspberry Pi. It is easily extensible and you can write your own plugins in Python, so you can do literary anything with it via Jabber. Ludolph supports both Python 2 and Python 3.</p>
+<p>One of the benefits of having a Jabber bot on Raspberry Pi is that you can communicate with it, even if it doesn’t have public IP address.  Easiest way is to install in into virtualenv and you can start playing with it immediately. We will go throughout proper Raspbian installation with a separate user and setting service as you would run it on production server.</p>
+<p>Add user under which we will run it</p>
+<div class="highlight"><pre>useradd -M ludolph
 </pre></div>
 
 
-<p>Not entirely sure why, but apt-get autoclean will remove Python libraries for GPIO and camera, so I had to install them back</p>
-<div class="highlight"><pre>sudo apt-get install python-picamera python3-picamera python3-rpi.gpio python-rpi.gpio
+<p>By default Raspberry Pi doesn’t have PIP installed, so we have to add it</p>
+<div class="highlight"><pre>sudo apt-get install python-pip
 </pre></div>
 
 
-<p>Finally remove some files that left and I don’t think they are necessary</p>
-<div class="highlight"><pre>rm -rf /usr/share/icons/ /usr/games/ /usr/share/themes/ /usr/share/images/ /home/pi/python_games/
+<p>Now we can install Ludolph into Raspbian</p>
+<div class="highlight"><pre>sudo pip install ludolph
 </pre></div>
 
 
-<p>Before cleanup:</p>
-<div class="highlight"><pre>Filesystem                    Size  Used Avail Use% Mounted on
-rootfs                        2.9G  2.5G  245M  92% /
-/dev/root                     2.9G  2.5G  245M  92% /
-devtmpfs                       88M     0   88M   0% /dev
-tmpfs                          19M  228K   19M   2% /run
-tmpfs                         5.0M     0  5.0M   0% /run/lock
-tmpfs                          37M     0   37M   0% /run/shm
-/dev/mmcblk0p1                 56M  9.8M   47M  18% /boot
+<p>Download the init script for Debian based linux from Github and make it executable</p>
+<div class="highlight"><pre>sudo wget -O /etc/init.d/ludolph https://raw.github.com/erigones/Ludolph/master/init.d/ludolph.debian
+sudo chmod +x /etc/init.d/ludolph
 </pre></div>
 
 
-<p>After clean up:</p>
-<div class="highlight"><pre>Filesystem                    Size  Used Avail Use% Mounted on
-rootfs                        2.9G  922M  1.9G  34% /
-/dev/root                     2.9G  922M  1.9G  34% /
-devtmpfs                       88M     0   88M   0% /dev
-tmpfs                          19M  224K   19M   2% /run
-tmpfs                         5.0M     0  5.0M   0% /run/lock
-tmpfs                          37M     0   37M   0% /run/shm
-/dev/mmcblk0p1                 56M  9.8M   47M  18% /boot
+<p>We need to make a few amendments in the file.</p>
+<div class="highlight"><pre><span class="x">USER=ludolph</span>
+<span class="x">PIDFILE=/tmp/</span><span class="p">$</span><span class="nv">NAME</span><span class="p">.</span><span class="nv">pid</span><span class="x"></span>
+<span class="x">DAEMON=&quot;/usr/local/bin/</span><span class="p">$</span><span class="nv">NAME</span><span class="x">&quot;</span>
 </pre></div>
 
 
-<p>Image size went down from 2.5GB to 922MB which is significant improvement and after reboot everything seems working… </p>
-<p>It is always a good idea to backup, so let create an backup of the SD card with dd command. You have to know which device is your SD card, how to do so I have explained <a href="/install-raspbian-on-raspberry-pi.html">here</a>. Insert SD card to your Mac or Linux and run dd command (replace /dev/diskX with your path).</p>
-<div class="highlight"><pre>dd if=/dev/diskX of=/path/to/image bs=1M
+<ul>
+<li>Make sure <code>USER</code> is set to newly crated user </li>
+<li>user has proper write permissions for file configured in <code>PIDFILE</code> </li>
+<li><code>DEAMON</code> is path to Ludolph executable script.   //Update init script. GIT update path to ludolph</li>
+</ul>
+<p>Now we need to copy configuration file </p>
+<div class="highlight"><pre>sudo wget -O /etc/ludolph.cfg https://raw.github.com/erigones/Ludolph/master/ludolph/ludolph.cfg.example
 </pre></div>
 
 
-<p>In my case it would be</p>
-<div class="highlight"><pre>dd if=/dev/sdc1 of=~/raspbian-wheezy-minimized.img bs=1M
+<p>And setup required fields. We are running it is daemon mode so enable this option, uncomment pidfile option and make sure it matches the path defined in <code>PIDFILE</code> in init script. Also setup login credentials that you would like to use</p>
+<div class="highlight"><pre><span class="k">[global]</span>
+<span class="c1"># We are going to run Ludolph in daemon mode</span>
+<span class="na">daemon</span> <span class="o">=</span> <span class="s">true</span>
+<span class="c1"># Uncomment, add path to pid file</span>
+<span class="c1"># Make sure that `USER` has proper write permissions</span>
+<span class="na">pidfile</span> <span class="o">=</span> <span class="s">/tmp/ludolph.pid</span>
+<span class="c1"># Use a dedicated jabber account for Ludolph</span>
+<span class="na">username</span> <span class="o">=</span> <span class="s">ludolph@example.com</span>
+<span class="na">password</span> <span class="o">=</span> <span class="s">ludolphpassword</span>
 </pre></div>
 
 
-<p>On some systems (like Mac) <em>1M</em> has to be lower case <em>1m</em>. This command takes quite a while. So grab a coffee and read another article.</p> </div><!-- entry-content -->
+<p>Other useful options you probably want to fill in is users and admins configuration variables so nobody (except you) will be able to talk to Ludolph. Just put in there your jabber ID. Afterwards we need to adjust the configuration file ownership and permissions so nobody except the user under which Ludolph runs is able to read it</p>
+<div class="highlight"><pre>sudo chown root:USERgroup /etc/ludolph.cfg
+sudo chmod 0640 /etc/ludolph.cfg
+</pre></div>
+
+
+<p>And now we can start Ludolph as a regular Raspbian service</p>
+<div class="highlight"><pre>sudo service ludolph start
+</pre></div> </div><!-- entry-content -->
 <div class="entry-comments">
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'richardkellnerovcisk';
-    var disqus_identifier = 'minimize-raspbian-image.html';
-    var disqus_title = 'Minimized Raspbian image (no X server) with SD card backup';
-    var disqus_url = 'http://richard.kellnerovci.sk/minimize-raspbian-image.html';
+    var disqus_identifier = 'install-ludolph-on-raspberry-pi.html';
+    var disqus_title = 'Install Ludolph on Raspberry Pi';
+    var disqus_url = 'http://richard.kellnerovci.sk/install-ludolph-on-raspberry-pi.html';
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -126,8 +132,8 @@ tmpfs                          37M     0   37M   0% /run/shm
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2015-04-12T22:53:00+02:00">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Sun 12 April 2015
+    <abbr class="published" title="2015-04-13T16:18:00+02:00">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Mon 13 April 2015
     </abbr>
 
     <div class="sidebar-module">
@@ -135,7 +141,7 @@ tmpfs                          37M     0   37M   0% /run/shm
       <ol class="list-unstyled">
         <li><a href="http://richard.kellnerovci.sk/tag/raspberry-pi.html">Raspberry Pi</a></li>
         <li><a href="http://richard.kellnerovci.sk/tag/raspbian.html">Raspbian</a></li>
-        <li><a href="http://richard.kellnerovci.sk/tag/backups.html">backups</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/ludolph.html">Ludolph</a></li>
       </ol>
     </div>
 

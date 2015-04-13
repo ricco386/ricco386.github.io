@@ -1,5 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/backups.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 17 Feb 2015 22:44:00 +0100</lastBuildDate><item><title>Simple and space efficient backups with rsnapshot</title><link>http://richard.kellnerovci.sk/simple-and-space-efficient-backups-with-rsnapshot.html</link><description>&lt;p&gt;I have been using rsnapshot on my raspberry pi for some time as a backup solutiona and I have to admin it works really well.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/backups.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 12 Apr 2015 22:53:00 +0200</lastBuildDate><item><title>Minimized Raspbian image (no X server) with SD card backup</title><link>http://richard.kellnerovci.sk/minimize-raspbian-image.html</link><description>&lt;p&gt;Most of the time I am using Raspbian only in command line so I’ve decided to create a minimal image, with removed X server and other unnecessary stuff that is not needed for a server. &lt;/p&gt;
+&lt;p&gt;You might want to ask why to remove all the stuff when SD cards are cheap today? One reason is that with less packages there is lesser probability to have bugs in the system and other reason is that updates will take less time, as I don’t need to update packages that I don’t need.&lt;/p&gt;
+&lt;p&gt;Remove everything related to: X server, LXDE, Openbox, GTK, Alsa and TTF fonts. It will also remove the packages omxplayer, nano (vim rulez :), tsconf (for touch screens) and scratch (a programming environment aimed for kids).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get purge xserver* x11-common x11-utils x11-xkb-utils x11-xserver-utils xarchiver xauth xkb-data console-setup xinit lightdm libx{composite,cb,cursor,damage,dmcp,ext,font,ft,i,inerama,kbfile,klavier,mu,pm,randr,render,res,t,xf86}* lxde* lx{input,menu-data,panel,polkit,randr,session,session-edit,shortcut,task,terminal} obconf openbox gtk* libgtk* alsa* nano scratch tsconf desktop-file-utils omxplayer
+sudo apt-get autoremove
+sudo apt-get autoclean
+sudo apt-get clean
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Not entirely sure why, but apt-get autoclean will remove Python libraries for GPIO and camera, so I had to install them back&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install python-picamera python3-picamera python3-rpi.gpio python-rpi.gpio
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Finally remove some files that left and I don’t think they are necessary&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;rm -rf /usr/share/icons/ /usr/games/ /usr/share/themes/ /usr/share/images/ /home/pi/python_games/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Before cleanup:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Filesystem                    Size  Used Avail Use% Mounted on
+rootfs                        2.9G  2.5G  245M  92% /
+/dev/root                     2.9G  2.5G  245M  92% /
+devtmpfs                       88M     0   88M   0% /dev
+tmpfs                          19M  228K   19M   2% /run
+tmpfs                         5.0M     0  5.0M   0% /run/lock
+tmpfs                          37M     0   37M   0% /run/shm
+/dev/mmcblk0p1                 56M  9.8M   47M  18% /boot
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After clean up:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Filesystem                    Size  Used Avail Use% Mounted on
+rootfs                        2.9G  922M  1.9G  34% /
+/dev/root                     2.9G  922M  1.9G  34% /
+devtmpfs                       88M     0   88M   0% /dev
+tmpfs                          19M  224K   19M   2% /run
+tmpfs                         5.0M     0  5.0M   0% /run/lock
+tmpfs                          37M     0   37M   0% /run/shm
+/dev/mmcblk0p1                 56M  9.8M   47M  18% /boot
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Image size went down from 2.5GB to 922MB which is significant improvement and after reboot everything seems working… &lt;/p&gt;
+&lt;p&gt;It is always a good idea to backup, so let create an backup of the SD card with dd command. You have to know which device is your SD card, how to do so I have explained &lt;a href="/install-raspbian-on-raspberry-pi.html"&gt;here&lt;/a&gt;. Insert SD card to your Mac or Linux and run dd command (replace /dev/diskX with your path).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dd if=/dev/diskX of=/path/to/image bs=1M
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In my case it would be&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dd if=/dev/sdc1 of=~/raspbian-wheezy-minimized.img bs=1M
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;On some systems (like Mac) &lt;em&gt;1M&lt;/em&gt; has to be lower case &lt;em&gt;1m&lt;/em&gt;. This command takes quite a while. So grab a coffee and read another article.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Sun, 12 Apr 2015 22:53:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2015-04-12:minimize-raspbian-image.html</guid><category>Raspberry Pi</category><category>Raspbian</category><category>backups</category></item><item><title>Simple and space efficient backups with rsnapshot</title><link>http://richard.kellnerovci.sk/simple-and-space-efficient-backups-with-rsnapshot.html</link><description>&lt;p&gt;I have been using rsnapshot on my raspberry pi for some time as a backup solutiona and I have to admin it works really well.&lt;/p&gt;
 &lt;p&gt;Installation was very easy:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install rsnapshot
 &lt;/pre&gt;&lt;/div&gt;

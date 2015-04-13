@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/ludolph.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 13 Apr 2015 16:18:00 +0200</lastBuildDate><item><title>Install Ludolph on Raspberry Pi</title><link>http://richard.kellnerovci.sk/install-ludolph-on-raspberry-pi.html</link><description>&lt;p&gt;&lt;a href="https://github.com/erigones/Ludolph"&gt;Ludolph&lt;/a&gt; is Jabber Bot with &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; support, it is lightweight and has very few dependencies, therefore ideal to run on Raspberry Pi. It is easily extensible and you can write your own plugins in Python, so you can do literary anything with it via Jabber. Ludolph supports both Python 2 and Python 3.&lt;/p&gt;
+&lt;p&gt;One of the benefits of having a Jabber bot on Raspberry Pi is that you can communicate with it, even if it doesn’t have public IP address.  Easiest way is to install in into virtualenv and you can start playing with it immediately. We will go throughout proper Raspbian installation with a separate user and setting service as you would run it on production server.&lt;/p&gt;
+&lt;p&gt;Add user under which we will run it&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;useradd -M ludolph
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;By default Raspberry Pi doesn’t have PIP installed, so we have to add it&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install python-pip
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we can install Ludolph into Raspbian&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo pip install ludolph
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Download the init script for Debian based linux from Github and make it executable&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo wget -O /etc/init.d/ludolph https://raw.github.com/erigones/Ludolph/master/init.d/ludolph.debian
+sudo chmod +x /etc/init.d/ludolph
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We need to make a few amendments in the file.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt;USER=ludolph&lt;/span&gt;
+&lt;span class="x"&gt;PIDFILE=/tmp/&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;NAME&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;pid&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="x"&gt;DAEMON=&amp;quot;/usr/local/bin/&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;NAME&lt;/span&gt;&lt;span class="x"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Make sure &lt;code&gt;USER&lt;/code&gt; is set to newly crated user &lt;/li&gt;
+&lt;li&gt;user has proper write permissions for file configured in &lt;code&gt;PIDFILE&lt;/code&gt; &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DEAMON&lt;/code&gt; is path to Ludolph executable script.   //Update init script. GIT update path to ludolph&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now we need to copy configuration file &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo wget -O /etc/ludolph.cfg https://raw.github.com/erigones/Ludolph/master/ludolph/ludolph.cfg.example
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And setup required fields. We are running it is daemon mode so enable this option, uncomment pidfile option and make sure it matches the path defined in &lt;code&gt;PIDFILE&lt;/code&gt; in init script. Also setup login credentials that you would like to use&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[global]&lt;/span&gt;
+&lt;span class="c1"&gt;# We are going to run Ludolph in daemon mode&lt;/span&gt;
+&lt;span class="na"&gt;daemon&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
+&lt;span class="c1"&gt;# Uncomment, add path to pid file&lt;/span&gt;
+&lt;span class="c1"&gt;# Make sure that `USER` has proper write permissions&lt;/span&gt;
+&lt;span class="na"&gt;pidfile&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/tmp/ludolph.pid&lt;/span&gt;
+&lt;span class="c1"&gt;# Use a dedicated jabber account for Ludolph&lt;/span&gt;
+&lt;span class="na"&gt;username&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;ludolph@example.com&lt;/span&gt;
+&lt;span class="na"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;ludolphpassword&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Other useful options you probably want to fill in is users and admins configuration variables so nobody (except you) will be able to talk to Ludolph. Just put in there your jabber ID. Afterwards we need to adjust the configuration file ownership and permissions so nobody except the user under which Ludolph runs is able to read it&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo chown root:USERgroup /etc/ludolph.cfg
+sudo chmod 0640 /etc/ludolph.cfg
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And now we can start Ludolph as a regular Raspbian service&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo service ludolph start
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Mon, 13 Apr 2015 16:18:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2015-04-13:install-ludolph-on-raspberry-pi.html</guid><category>Raspberry Pi</category><category>Raspbian</category><category>Ludolph</category></item></channel></rss>
