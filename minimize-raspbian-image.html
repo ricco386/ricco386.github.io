@@ -48,8 +48,6 @@
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Sun 12 April 2015</p> -->
-
       <div class="entry-content"> <p>Most of the time I am using Raspbian only in command line so I’ve decided to create a minimal image, with removed X server and other unnecessary stuff that is not needed for a server. </p>
 <p>You might want to ask why to remove all the stuff when SD cards are cheap today? One reason is that with less packages there is lesser probability to have bugs in the system and other reason is that updates will take less time, as I don’t need to update packages that I don’t need.</p>
 <p>Remove everything related to: X server, LXDE, Openbox, GTK, Alsa and TTF fonts. It will also remove the packages omxplayer, nano (vim rulez :), tsconf (for touch screens) and scratch (a programming environment aimed for kids).</p>
@@ -126,9 +124,15 @@ tmpfs                          37M     0   37M   0% /run/shm
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2015-04-12T22:53:00+02:00">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Sun 12 April 2015
-    </abbr>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2015-04-12T22:53:00+02:00">12 April 2015</abbr>
+    </div>
 
     <div class="sidebar-module">
       <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>

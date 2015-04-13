@@ -48,8 +48,6 @@
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Mon 13 April 2015</p> -->
-
       <div class="entry-content"> <p><a href="https://github.com/erigones/Ludolph">Ludolph</a> is Jabber Bot with <a href="http://www.zabbix.com/">Zabbix</a> support, it is lightweight and has very few dependencies, therefore ideal to run on Raspberry Pi. It is easily extensible and you can write your own plugins in Python, so you can do literary anything with it via Jabber. Ludolph supports both Python 2 and Python 3.</p>
 <p>One of the benefits of having a Jabber bot on Raspberry Pi is that you can communicate with it, even if it doesn’t have public IP address.  Easiest way is to install in into virtualenv and you can start playing with it immediately. We will go throughout proper Raspbian installation with a separate user and setting service as you would run it on production server.</p>
 <p>Add user under which we will run it</p>
@@ -132,9 +130,15 @@ sudo chmod 0640 /etc/ludolph.cfg
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2015-04-13T16:18:00+02:00">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Mon 13 April 2015
-    </abbr>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2015-04-13T16:18:00+02:00">13 April 2015</abbr>
+    </div>
 
     <div class="sidebar-module">
       <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>

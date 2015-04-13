@@ -48,8 +48,6 @@
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Thu 31 January 2013</p> -->
-
       <div class="entry-content"> <p>One of the MySQL characteristics when using InnoDB is, if you delete database, MySQL is not able to return empty space back. If you have small databases you probably didnt even noticed it. However if your databases have several GB, you probably wish to get it back.</p>
 <p>Good news is, if you import your DB back, MySQL will use disk space, that it has already taken. So lets set MySQL in a way that we will be able to get back our disk space once we delete the database. InnoDB databases are not able to reduce file ibdata (standard directory in Fedore is situated in /var/lib/mysql). To get disk space back we will have to delete this file, but first lets follow this steps:</p>
 <ol>
@@ -93,9 +91,15 @@ innodb_file_per_table</p>
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2013-01-31T10:48:00+01:00">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Thu 31 January 2013
-    </abbr>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2013-01-31T10:48:00+01:00">31 January 2013</abbr>
+    </div>
 
     <div class="sidebar-module">
       <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>

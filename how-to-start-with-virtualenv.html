@@ -48,8 +48,6 @@
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Sat 23 June 2012</p> -->
-
       <div class="entry-content"> <p>As the name virtualenv implies, it is isolated virtual environment, which allows us install multiple versions of python applications and libraries on one system.</p>
 <p><em>What is it good for?</em></p>
 <p>Python allows install packages, which are available globally for whole system. If you are developing multiple applications, which needs different versions of dependencies, it is the right time to use virtual environments. For example we have web application that uses Django 1.3.1 and we want to migrate it into version 1.4.0 and have both versions available at the same time. This is what is virtual environments used for, because it allows us to have installed both versions on one machine at the same time.</p>
@@ -103,9 +101,15 @@ source bin/activate
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2012-06-23T16:37:00+02:00">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Sat 23 June 2012
-    </abbr>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2012-06-23T16:37:00+02:00">23 June 2012</abbr>
+    </div>
 
     <div class="sidebar-module">
       <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>

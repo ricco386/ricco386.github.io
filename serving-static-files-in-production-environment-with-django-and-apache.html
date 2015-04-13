@@ -48,8 +48,6 @@
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Fri 27 July 2012</p> -->
-
       <div class="entry-content"> <p>Launching Django project in production environment, sometimes can end up in a state where pictures, css, javastript and other things might not load. Mostly this is result of wrong static files setup. In this article we will show how to set it up correctly.</p>
 <p>In production environment static files should be allways send by webserver. In order to manage this, we need to collect static files and make sure that they are served by webserver. In our case we will show it on Apache webserver configuration (but same applies for other webservers).</p>
 <p><strong>settings.py</strong></p>
@@ -94,9 +92,15 @@ Allow from all
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2012-07-27T17:13:00+02:00">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Fri 27 July 2012
-    </abbr>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2012-07-27T17:13:00+02:00">27 July 2012</abbr>
+    </div>
 
     <div class="sidebar-module">
       <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>

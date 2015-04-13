@@ -48,8 +48,6 @@
     
     <div class="blog-post">
       <h2 class="blog-post-title"></h2>
-      <!--      <p class="blog-post-meta">Thu 07 March 2013</p> -->
-
       <div class="entry-content"> <p>Raspbian “wheezy” is optimized version of Debian for Raspberry Pi. We will talk about how to install Raspbian on SD card so it is bootable on Raspberry Pi. This guide is almost identical with official wiki, but we will also upgrade firmware and run some comparison tests. We will do all the work in Linux terminal, if you are looking for graphical environment or Windows installer I suggest <a href="http://elinux.org/RPi_Easy_SD_Card_Setup">oficial wiki</a>.</p>
 <ul>
 <li>Download Raspbian image from official page: <a href="http://www.raspberrypi.org/downloads">http://www.raspberrypi.org/downloads</a></li>
@@ -151,9 +149,15 @@ pi@raspberrypi ~ $ dd if=~/test.tmp of=/dev/null bs=500K count=1024
   </div><!-- /.blog-main -->
 
   <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <abbr class="published" title="2013-03-07T09:31:00+01:00">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Thu 07 March 2013
-    </abbr>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2013-03-07T09:31:00+01:00">07 March 2013</abbr>
+    </div>
 
     <div class="sidebar-module">
       <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
