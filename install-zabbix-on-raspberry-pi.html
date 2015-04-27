@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Richard Kellner">
+    <meta name="keywords" content="" />
+    <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
+
+    <title>Richard's Log | Let`s learn what is going on with Raspberry Pis in home network</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://richard.kellnerovci.sk/theme/css/blog.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+    <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk">Home</a>
+          <a class="blog-nav-item" href="http://richard.kellnerovci.sk/public-pgp-key.html">My Public PGP key</a>
+          <a class="blog-nav-item " href="http://richard.kellnerovci.sk/archives.html">Archives</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="blog-header">
+        <h1 class="blog-title">Let`s learn what is going on with Raspberry Pis in home network</h1>
+<p class="lead blog-description"></p>      </div>
+<div class="row">
+  <div class="col-sm-8 blog-main">
+    
+    <div class="blog-post">
+      <h2 class="blog-post-title"></h2>
+      <div class="entry-content"> <p>Since I have several Raspberry Pi’s at home, I figured out it would be cool to know how they perform while I am not using them. I decided to install <a href="http://www.zabbix.com/">Zabbix</a> on one of them. If you don’t know what Zabbix is, it is an open source monitoring solution for networks and applications.</p>
+<p>Let`s install dependencies required for compiling Zabbix from source.</p>
+<div class="highlight"><pre>sudo apt-get install libxml2-dev libsnmp-dev libcurl4-openssl-dev
+</pre></div>
+
+
+<p>I have decided to use PostgreSQL, even though MySQL is available as well, but the performance on Raspberry Pi is significant better with PostgreSQL. Raspbian Wheezy has in repositories version 9.1 available, which is older but sufficient</p>
+<div class="highlight"><pre>sudo apt-get install postgresql-9.1 postgresql-server-dev-9.1
+</pre></div>
+
+
+<p>If you want to use Zabbix with MySQL (which I do NOT recommend) install additional library</p>
+<div class="highlight"><pre>sudo apt-get libmysqld-dev
+</pre></div>
+
+
+<p>Lets create zabbix user</p>
+<div class="highlight"><pre>sudo adduser --no-create-home zabbix
+</pre></div>
+
+
+<p>We need to login to database as postgres</p>
+<div class="highlight"><pre>sudo -s
+su postgres
+psql
+</pre></div>
+
+
+<p>Connect to template1, create new database and grant access to zabbix user</p>
+<div class="highlight"><pre>\c template1
+CREATE USER zabbix WITH PASSWORD &#39;secretPASSWORD&#39;;
+CREATE DATABASE zabbix;
+GRANT ALL PRIVILEGES ON DATABASE zabbix TO zabbix;
+\q
+</pre></div>
+
+
+<p>Switch back to pi user and download latest <a href="http://www.zabbix.com/download.php">Zabbix from official page</a> copy to Raspberry Pi and extract it</p>
+<div class="highlight"><pre>tar -zxvf zabbix-2.4.5.tar.gz
+</pre></div>
+
+
+<p>We need to import database schema and data, so go to postgresql directory and import files in this order</p>
+<div class="highlight"><pre>cd database/postgresql
+psql -U zabbix zabbix &lt; schema.sql
+psql -U zabbix zabbix &lt; images.sql
+psql -U zabbix zabbix &lt; data.sql
+</pre></div>
+
+
+<p>In case you want it to install to MySQL, just switch import directory postgresql to mysql and import files in the same order. Performance tuning tip for MySQL is to use MyISAM instead of InnoDB as storage engine, it will lower the requirements for CPU when running, but be aware that this step is NOT recommended by Zabbix.</p>
+<p>Return back to Zabbix root directory and start compiling with this options</p>
+<div class="highlight"><pre>./configure --enable-server --enable-agent --with-postgresql --with-net-snmp --with-libcurl --with-libxml2
+sudo make install
+</pre></div>
+
+
+<p>For MySQL installation change from <code>—-with-postgresql</code> to <code>—-with-mysql</code></p>
+<p>We need to set database name <code>DBName</code>, user <code>DBUser</code> and password <code>DBPassword</code> in file zabbix_server.conf</p>
+<div class="highlight"><pre>sudo vi /usr/local/etc/zabbix_server.conf
+</pre></div>
+
+
+<p>Update zabbix_agentd.conf with <code>Server</code> IP address set to 127.0.0.1</p>
+<div class="highlight"><pre>sudo vi /usr/local/etc/zabbix_agentd.conf
+</pre></div>
+
+
+<p>Copy daemons into system</p>
+<div class="highlight"><pre>sudo cp misc/init.d/debian/zabbix-server /etc/init.d/
+sudo cp misc/init.d/debian/zabbix-agent /etc/init.d/
+</pre></div>
+
+
+<p>Modify daemons and add LSB tags so they are proper Debian init scripts and we can manipulate them with service command (analogically do the same for agent script)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/sh</span>
+
+<span class="c">### BEGIN INIT INFO</span>
+<span class="c"># Provides:          zabbix_server</span>
+<span class="c"># Required-Start:    $all</span>
+<span class="c"># Required-Stop:     </span>
+<span class="c"># Default-Start:     2 3 4 5</span>
+<span class="c"># Default-Stop:      0 1 6</span>
+<span class="c"># Short-Description: Zabbix server</span>
+<span class="c"># Description:       Zabbix server daemon</span>
+<span class="c">### END INIT INFO</span>
+</pre></div>
+</td></tr></table>
+
+<p>Setup on boot daemon start and start both daemons</p>
+<div class="highlight"><pre>sudo chmod 755 /etc/init.d/zabbix-server
+sudo update-rc.d zabbix-server defaults
+/etc/init.d/zabbix-server start
+
+sudo chmod 755 /etc/init.d/zabbix-agent
+sudo update-rc.d zabbix-agent defaults
+/etc/init.d/zabbix-agent start
+</pre></div>
+
+
+<p>It is possible to have the PHP web interface on the same Raspberry Pi, however I have tested on first version and it works, but the performance is slow and sometimes it really overload the whole OS. I managed to make load higher than 20 with draining whole RAM and SWAP, so my recommendation is to install it on other machine, but if that is not an option for you, follow this steps to install Zabbix web interface on your Raspberry Pi</p>
+<p>We need to have Nginx and PHP installed, I have already talked about it in older <a href="/install-nginx-php-and-mysql-on-raspberry-pi.html">blog post</a>. We also need install dependencies required for PHP</p>
+<div class="highlight"><pre>sudo apt-get install php5-gd php5-pgsql
+</pre></div>
+
+
+<p>Create directory where webgui will be stored and set web server owner</p>
+<div class="highlight"><pre>sudo mkdir /var/www/zabbix
+sudo cp -a frontends/php/* /var/www/zabbix/
+sudo chown -R www-data /var/www/zabbix
+</pre></div>
+
+
+<p>We have to update php.ini so it matches the Zabbix requirements</p>
+<div class="highlight"><pre>sudo vi /etc/php5/fpm/php.ini
+</pre></div>
+
+
+<p>Make sure these values are set:</p>
+<div class="highlight"><pre><span class="n">max_execution_time</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">max_input_time</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">post_max_size</span> <span class="o">=</span> <span class="mi">16</span><span class="n">M</span>
+<span class="n">date</span><span class="p">.</span><span class="n">timezone</span> <span class="o">=</span> <span class="p">[</span><span class="n">supported</span> <span class="n">timezone</span><span class="p">](</span><span class="nl">http</span><span class="p">:</span><span class="c1">//php.net/manual/en/timezones.php)</span>
+</pre></div>
+
+
+<p>PHP has to be reloaded in order to our changes take effects</p>
+<div class="highlight"><pre>sudo /etc/init.d/php5-fpm restart
+</pre></div>
+
+
+<p>We also need to create site-available configuration file</p>
+<div class="highlight"><pre><span class="nt">server</span> <span class="p">{</span>
+    <span class="n">listen</span> <span class="m">80</span><span class="p">;</span> <span class="err">#</span> <span class="n">listen</span> <span class="n">for</span> <span class="n">ipv4</span>
+    <span class="n">server_name</span> <span class="m">127</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">1</span> <span class="n">zabbix</span><span class="p">;</span> <span class="err">#</span> <span class="n">Add</span> <span class="n">your</span> <span class="n">Raspberry</span> <span class="n">Pi</span> <span class="n">IP</span> <span class="n">address</span> <span class="n">here</span>
+
+    <span class="n">access_log</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">zabbix</span><span class="o">.</span><span class="n">access</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
+    <span class="n">error_log</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">zabbix</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
+
+    <span class="n">root</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">zabbix</span><span class="p">;</span>
+
+    <span class="n">location</span> <span class="o">/</span> <span class="err">{</span>
+        <span class="n">root</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">zabbix</span><span class="p">;</span>
+        <span class="n">index</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">htm</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#</span> <span class="nt">Parse</span> <span class="nt">all</span> <span class="nc">.php</span> <span class="nt">file</span> <span class="nt">in</span> <span class="nt">the</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">www</span><span class="o">/</span><span class="nt">zabbix</span> <span class="nt">directory</span>
+    <span class="nt">location</span> <span class="o">~</span> <span class="err">\</span><span class="nc">.php</span><span class="o">$</span> <span class="p">{</span>
+        <span class="n">fastcgi_split_path_info</span> <span class="o">^</span><span class="p">(</span><span class="o">.+</span><span class="err">\</span><span class="o">.</span><span class="n">php</span><span class="p">)(</span><span class="o">.*</span><span class="p">)</span><span class="err">$</span><span class="p">;</span>
+        <span class="n">fastcgi_pass</span> <span class="m">127</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">1</span><span class="o">:</span><span class="m">9000</span><span class="p">;</span>
+        <span class="n">fastcgi_index</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="p">;</span>
+        <span class="n">fastcgi_param</span> <span class="n">SCRIPT_FILENAME</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">zabbix</span><span class="err">$</span><span class="n">fastcgi_script_name</span><span class="p">;</span>
+        <span class="n">include</span> <span class="n">fastcgi_params</span><span class="p">;</span>
+        <span class="n">fastcgi_param</span> <span class="n">QUERY_STRING</span> <span class="err">$</span><span class="n">query_string</span><span class="p">;</span>
+        <span class="n">fastcgi_param</span> <span class="n">REQUEST_METHOD</span> <span class="err">$</span><span class="n">request_method</span><span class="p">;</span>
+        <span class="n">fastcgi_param</span> <span class="n">CONTENT_TYPE</span> <span class="err">$</span><span class="n">content_type</span><span class="p">;</span>
+        <span class="n">fastcgi_param</span> <span class="n">CONTENT_LENGTH</span> <span class="err">$</span><span class="n">content_length</span><span class="p">;</span>
+        <span class="n">fastcgi_intercept_errors</span> <span class="n">on</span><span class="p">;</span>
+        <span class="n">fastcgi_ignore_client_abort</span> <span class="n">off</span><span class="p">;</span>
+        <span class="n">fastcgi_connect_timeout</span> <span class="m">60</span><span class="p">;</span>
+        <span class="n">fastcgi_send_timeout</span> <span class="m">180</span><span class="p">;</span>
+        <span class="n">fastcgi_read_timeout</span> <span class="m">180</span><span class="p">;</span>
+        <span class="n">fastcgi_buffer_size</span> <span class="m">128</span><span class="n">k</span><span class="p">;</span>
+        <span class="n">fastcgi_buffers</span> <span class="m">4</span> <span class="m">256</span><span class="n">k</span><span class="p">;</span>
+        <span class="n">fastcgi_busy_buffers_size</span> <span class="m">256</span><span class="n">k</span><span class="p">;</span>
+        <span class="n">fastcgi_temp_file_write_size</span> <span class="m">256</span><span class="n">k</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#</span> <span class="nt">Disable</span> <span class="nt">viewing</span> <span class="nc">.htaccess</span> <span class="o">&amp;</span><span class="nt">amp</span><span class="o">;</span> <span class="nc">.htpassword</span>
+    <span class="nt">location</span> <span class="o">~</span> <span class="o">/</span><span class="err">\</span><span class="nc">.ht</span> <span class="p">{</span>
+        <span class="n">deny</span> <span class="n">all</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<p>Reload Nginx to read new configuration</p>
+<div class="highlight"><pre>sudo /etc/init.d/nginx restart
+</pre></div>
+
+
+<p>Open browser and visit your Raspberry Pi and finish configuration in browser</p> </div><!-- entry-content -->
+<div class="entry-comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'richardkellnerovcisk';
+    var disqus_identifier = 'install-zabbix-on-raspberry-pi.html';
+    var disqus_title = 'Let`s learn what is going on with Raspberry Pis in home network';
+    var disqus_url = 'http://richard.kellnerovci.sk/install-zabbix-on-raspberry-pi.html';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div><!-- entry-comments -->
+    </div><!-- /.blog-post -->
+  
+  </div><!-- /.blog-main -->
+
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2015-04-26T22:09:00+02:00">26 April 2015</abbr>
+    </div>
+
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="http://richard.kellnerovci.sk/tag/raspberry-pi.html">Raspberry Pi</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/zabbix.html">Zabbix</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/postgresql.html">PostgreSQL</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
+      </ol>
+    </div>
+
+<div class="sidebar-module">
+  <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Elsewhere</h4>
+  <ol class="list-unstyled">
+    <li><a href="https://github.com/ricco386"><i class="icon-github-sign icon-large"></i>Github</a></li>
+    <li><a href="https://twitter.com/RicCo386"><i class="icon-twitter-sign icon-large"></i>Twitter</a></li>
+    <li><a href="https://www.linkedin.com/in/richardkellner"><i class="icon-linkedin-sign icon-large"></i>LinkedIn</a></li>
+    <li><a href="https://keybase.io/ricco"><i class="icon-keybase-sign icon-large"></i>Keybase</a></li>
+    <li><a href="http://richard.kellnerovci.sk/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
+  </ol>
+</div>
+  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
+    </div><!--/.container -->
+    <!-- End page content -->
+
+    <footer class="blog-footer">
+      <p>
+        <a href="http://richard.kellnerovci.sk">Richard's Log</a> Proudly powered by <a href="http://getpelican.com/">Pelican</a>
+      </p>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://richard.kellnerovci.sk/theme/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://richard.kellnerovci.sk/theme/js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//piwik.ricco.sk/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 4]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//piwik.ricco.sk/piwik.php?idsite=4" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+  </body>
+</html>

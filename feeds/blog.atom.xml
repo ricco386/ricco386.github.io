@@ -1,5 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Richard's Log</title><link href="http://richard.kellnerovci.sk/" rel="alternate"></link><link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" rel="self"></link><id>http://richard.kellnerovci.sk/</id><updated>2015-04-13T16:18:00+02:00</updated><entry><title>Install Ludolph on Raspberry Pi</title><link href="http://richard.kellnerovci.sk/install-ludolph-on-raspberry-pi.html" rel="alternate"></link><updated>2015-04-13T16:18:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2015-04-13:install-ludolph-on-raspberry-pi.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/erigones/Ludolph"&gt;Ludolph&lt;/a&gt; is Jabber Bot with &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; support, it is lightweight and has very few dependencies, therefore ideal to run on Raspberry Pi. It is easily extensible and you can write your own plugins in Python, so you can do literary anything with it via Jabber. Ludolph supports both Python 2 and Python 3.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Richard's Log</title><link href="http://richard.kellnerovci.sk/" rel="alternate"></link><link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" rel="self"></link><id>http://richard.kellnerovci.sk/</id><updated>2015-04-26T22:09:00+02:00</updated><entry><title>Let`s learn what is going on with Raspberry Pis in home network</title><link href="http://richard.kellnerovci.sk/install-zabbix-on-raspberry-pi.html" rel="alternate"></link><updated>2015-04-26T22:09:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2015-04-26:install-zabbix-on-raspberry-pi.html</id><summary type="html">&lt;p&gt;Since I have several Raspberry Pi’s at home, I figured out it would be cool to know how they perform while I am not using them. I decided to install &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; on one of them. If you don’t know what Zabbix is, it is an open source monitoring solution for networks and applications.&lt;/p&gt;
+&lt;p&gt;Let`s install dependencies required for compiling Zabbix from source.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install libxml2-dev libsnmp-dev libcurl4-openssl-dev
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I have decided to use PostgreSQL, even though MySQL is available as well, but the performance on Raspberry Pi is significant better with PostgreSQL. Raspbian Wheezy has in repositories version 9.1 available, which is older but sufficient&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install postgresql-9.1 postgresql-server-dev-9.1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you want to use Zabbix with MySQL (which I do NOT recommend) install additional library&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get libmysqld-dev
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Lets create zabbix user&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo adduser --no-create-home zabbix
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We need to login to database as postgres&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo -s
+su postgres
+psql
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Connect to template1, create new database and grant access to zabbix user&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;\c template1
+CREATE USER zabbix WITH PASSWORD &amp;#39;secretPASSWORD&amp;#39;;
+CREATE DATABASE zabbix;
+GRANT ALL PRIVILEGES ON DATABASE zabbix TO zabbix;
+\q
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Switch back to pi user and download latest &lt;a href="http://www.zabbix.com/download.php"&gt;Zabbix from official page&lt;/a&gt; copy to Raspberry Pi and extract it&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;tar -zxvf zabbix-2.4.5.tar.gz
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We need to import database schema and data, so go to postgresql directory and import files in this order&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cd database/postgresql
+psql -U zabbix zabbix &amp;lt; schema.sql
+psql -U zabbix zabbix &amp;lt; images.sql
+psql -U zabbix zabbix &amp;lt; data.sql
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In case you want it to install to MySQL, just switch import directory postgresql to mysql and import files in the same order. Performance tuning tip for MySQL is to use MyISAM instead of InnoDB as storage engine, it will lower the requirements for CPU when running, but be aware that this step is NOT recommended by Zabbix.&lt;/p&gt;
+&lt;p&gt;Return back to Zabbix root directory and start compiling with this options&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;./configure --enable-server --enable-agent --with-postgresql --with-net-snmp --with-libcurl --with-libxml2
+sudo make install
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For MySQL installation change from &lt;code&gt;—-with-postgresql&lt;/code&gt; to &lt;code&gt;—-with-mysql&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;We need to set database name &lt;code&gt;DBName&lt;/code&gt;, user &lt;code&gt;DBUser&lt;/code&gt; and password &lt;code&gt;DBPassword&lt;/code&gt; in file zabbix_server.conf&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /usr/local/etc/zabbix_server.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Update zabbix_agentd.conf with &lt;code&gt;Server&lt;/code&gt; IP address set to 127.0.0.1&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /usr/local/etc/zabbix_agentd.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Copy daemons into system&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo cp misc/init.d/debian/zabbix-server /etc/init.d/
+sudo cp misc/init.d/debian/zabbix-agent /etc/init.d/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Modify daemons and add LSB tags so they are proper Debian init scripts and we can manipulate them with service command (analogically do the same for agent script)&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/sh&lt;/span&gt;
+
+&lt;span class="c"&gt;### BEGIN INIT INFO&lt;/span&gt;
+&lt;span class="c"&gt;# Provides:          zabbix_server&lt;/span&gt;
+&lt;span class="c"&gt;# Required-Start:    $all&lt;/span&gt;
+&lt;span class="c"&gt;# Required-Stop:     &lt;/span&gt;
+&lt;span class="c"&gt;# Default-Start:     2 3 4 5&lt;/span&gt;
+&lt;span class="c"&gt;# Default-Stop:      0 1 6&lt;/span&gt;
+&lt;span class="c"&gt;# Short-Description: Zabbix server&lt;/span&gt;
+&lt;span class="c"&gt;# Description:       Zabbix server daemon&lt;/span&gt;
+&lt;span class="c"&gt;### END INIT INFO&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Setup on boot daemon start and start both daemons&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo chmod 755 /etc/init.d/zabbix-server
+sudo update-rc.d zabbix-server defaults
+/etc/init.d/zabbix-server start
+
+sudo chmod 755 /etc/init.d/zabbix-agent
+sudo update-rc.d zabbix-agent defaults
+/etc/init.d/zabbix-agent start
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is possible to have the PHP web interface on the same Raspberry Pi, however I have tested on first version and it works, but the performance is slow and sometimes it really overload the whole OS. I managed to make load higher than 20 with draining whole RAM and SWAP, so my recommendation is to install it on other machine, but if that is not an option for you, follow this steps to install Zabbix web interface on your Raspberry Pi&lt;/p&gt;
+&lt;p&gt;We need to have Nginx and PHP installed, I have already talked about it in older &lt;a href="/install-nginx-php-and-mysql-on-raspberry-pi.html"&gt;blog post&lt;/a&gt;. We also need install dependencies required for PHP&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install php5-gd php5-pgsql
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create directory where webgui will be stored and set web server owner&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo mkdir /var/www/zabbix
+sudo cp -a frontends/php/* /var/www/zabbix/
+sudo chown -R www-data /var/www/zabbix
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We have to update php.ini so it matches the Zabbix requirements&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/php5/fpm/php.ini
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Make sure these values are set:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;max_execution_time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;
+&lt;span class="n"&gt;max_input_time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;
+&lt;span class="n"&gt;post_max_size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt;
+&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;timezone&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;supported&lt;/span&gt; &lt;span class="n"&gt;timezone&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="nl"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//php.net/manual/en/timezones.php)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;PHP has to be reloaded in order to our changes take effects&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo /etc/init.d/php5-fpm restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We also need to create site-available configuration file&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="m"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="n"&gt;for&lt;/span&gt; &lt;span class="n"&gt;ipv4&lt;/span&gt;
+    &lt;span class="n"&gt;server_name&lt;/span&gt; &lt;span class="m"&gt;127&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="n"&gt;zabbix&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Add&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="n"&gt;Raspberry&lt;/span&gt; &lt;span class="n"&gt;Pi&lt;/span&gt; &lt;span class="n"&gt;IP&lt;/span&gt; &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="n"&gt;here&lt;/span&gt;
+
+    &lt;span class="n"&gt;access_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zabbix&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;access&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;error_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zabbix&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zabbix&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;location&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zabbix&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;htm&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="nt"&gt;Parse&lt;/span&gt; &lt;span class="nt"&gt;all&lt;/span&gt; &lt;span class="nc"&gt;.php&lt;/span&gt; &lt;span class="nt"&gt;file&lt;/span&gt; &lt;span class="nt"&gt;in&lt;/span&gt; &lt;span class="nt"&gt;the&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;zabbix&lt;/span&gt; &lt;span class="nt"&gt;directory&lt;/span&gt;
+    &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nc"&gt;.php&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_split_path_info&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;.+&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="o"&gt;.*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_pass&lt;/span&gt; &lt;span class="m"&gt;127&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;9000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_index&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;SCRIPT_FILENAME&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zabbix&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;fastcgi_script_name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;include&lt;/span&gt; &lt;span class="n"&gt;fastcgi_params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;QUERY_STRING&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;query_string&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;REQUEST_METHOD&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;request_method&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;CONTENT_TYPE&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;content_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_param&lt;/span&gt; &lt;span class="n"&gt;CONTENT_LENGTH&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;content_length&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_intercept_errors&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_ignore_client_abort&lt;/span&gt; &lt;span class="n"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_connect_timeout&lt;/span&gt; &lt;span class="m"&gt;60&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_send_timeout&lt;/span&gt; &lt;span class="m"&gt;180&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_read_timeout&lt;/span&gt; &lt;span class="m"&gt;180&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_buffer_size&lt;/span&gt; &lt;span class="m"&gt;128&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_buffers&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt; &lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_busy_buffers_size&lt;/span&gt; &lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;fastcgi_temp_file_write_size&lt;/span&gt; &lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="nt"&gt;Disable&lt;/span&gt; &lt;span class="nt"&gt;viewing&lt;/span&gt; &lt;span class="nc"&gt;.htaccess&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nt"&gt;amp&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nc"&gt;.htpassword&lt;/span&gt;
+    &lt;span class="nt"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nc"&gt;.ht&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;deny&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Reload Nginx to read new configuration&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo /etc/init.d/nginx restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Open browser and visit your Raspberry Pi and finish configuration in browser&lt;/p&gt;</summary><category term="Raspberry Pi"></category><category term="Zabbix"></category><category term="PostgreSQL"></category><category term="MySQL"></category></entry><entry><title>Install Ludolph on Raspberry Pi</title><link href="http://richard.kellnerovci.sk/install-ludolph-on-raspberry-pi.html" rel="alternate"></link><updated>2015-04-13T16:18:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2015-04-13:install-ludolph-on-raspberry-pi.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/erigones/Ludolph"&gt;Ludolph&lt;/a&gt; is Jabber Bot with &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; support, it is lightweight and has very few dependencies, therefore ideal to run on Raspberry Pi. It is easily extensible and you can write your own plugins in Python, so you can do literary anything with it via Jabber. Ludolph supports both Python 2 and Python 3.&lt;/p&gt;
 &lt;p&gt;One of the benefits of having a Jabber bot on Raspberry Pi is that you can communicate with it, even if it doesn’t have public IP address.  Easiest way is to install in into virtualenv and you can start playing with it immediately. We will go throughout proper Raspbian installation with a separate user and setting service as you would run it on production server.&lt;/p&gt;
 &lt;p&gt;Add user under which we will run it&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;useradd -M ludolph
