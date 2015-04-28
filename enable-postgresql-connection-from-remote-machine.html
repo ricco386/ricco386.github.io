@@ -8,7 +8,7 @@
     <meta name="keywords" content="" />
     <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
 
-    <title>Richard's Log</title>
+    <title>Richard's Log | Enable PostgreSQL connection from remote machine</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,7 @@
   
     <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
     <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
   </head>
 
   <body>
@@ -40,49 +41,90 @@
 
     <div class="container">
       <div class="blog-header">
-        <h1 class="blog-title">404 - Page does not exists</h1>
+        <h1 class="blog-title">Enable PostgreSQL connection from remote machine</h1>
 <p class="lead blog-description"></p>      </div>
 <div class="row">
   <div class="col-sm-8 blog-main">
+    
+    <div class="blog-post">
+      <h2 class="blog-post-title"></h2>
+      <div class="entry-content"> <p>Let’s continue in previous article and enable PostgreSQL connection from different machine in network. This allows Zabbix web interface to connect from another machine.</p>
+<p>To allow connection from another machine in network to PostgreSQL modify configuration file </p>
+<div class="highlight"><pre>sudo vi /etc/postgresql/9.1/main/pg_hba.conf
+</pre></div>
 
-    <div class='page'>
-      <div class="entry-content"><p><strong>404</strong>: Page does not exists</p>
-<p>Why dont you try to pick something from navigation...</p></div>
+
+<p>add line to give access to database (zabbix) for user (zabbix) from network (192.168.1.0/24)</p>
+<div class="highlight"><pre>host    zabbix          zabbix          192.168.1.0/24         trust
+</pre></div>
+
+
+<p>open PostgreSQL configuration file</p>
+<div class="highlight"><pre>sudo vi /etc/postgresql/9.1/main/postgresql.conf
+</pre></div>
+
+
+<p>To set IP address(es) to listen on, find line</p>
+<div class="highlight"><pre>listen_addresses=&#39;localhost&#39;
+</pre></div>
+
+
+<p>and replace with comma separated list of addresses, or * for all IPs</p>
+<div class="highlight"><pre>listen_addresses = ‘*’
+</pre></div>
+
+
+<p>Restart PostgreSQL server</p>
+<div class="highlight"><pre>/etc/init.d/postgresql restart
+</pre></div>
+
+
+<p>Test your setup from machine where zabbix fronted will be run</p>
+<div class="highlight"><pre>psql -h 192.168.1.1 -U zabbix -d zabbix
+</pre></div>
+
+
+<p>To setup Zabbix web interface just return to <a href="/install-zabbix-on-raspberry-pi.html">previous article</a> and follow the steps there…</p> </div><!-- entry-content -->
+<div class="entry-comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'richardkellnerovcisk';
+    var disqus_identifier = 'enable-postgresql-connection-from-remote-machine.html';
+    var disqus_title = 'Enable PostgreSQL connection from remote machine';
+    var disqus_url = 'http://richard.kellnerovci.sk/enable-postgresql-connection-from-remote-machine.html';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div><!-- entry-comments -->
+    </div><!-- /.blog-post -->
+  
+  </div><!-- /.blog-main -->
+
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
     </div>
 
-  </div>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2015-04-29T01:44:00+02:00">29 April 2015</abbr>
+    </div>
 
-<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-<div class="sidebar-module sidebar-module-inset">
-  <blockquote>
-    <p><em>
-      In a world where death is the hunter, my friend, there is no time for regrets or doubts. There is only time for decisions.
-    </em></p>
-    <footer>Carlos Castaneda</footer>
-  </blockquote>
-</div><div>
-  <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
-  <ol id="cloud">
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/apache.html">Apache</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/ludolph.html">Ludolph</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/postgresql.html">PostgreSQL</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/php.html">PHP</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/virtualenv.html">virtualenv</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/python.html">Python</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/ext3.html">EXT3</a></li>
-    <li><a class="tag1" href="http://richard.kellnerovci.sk/tag/raspberry-pi.html">Raspberry Pi</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/git.html">git</a></li>
-    <li><a class="tag3" href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/conference.html">Conference</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/nginx.html">Nginx</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/centos.html">CentOS</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/zabbix.html">Zabbix</a></li>
-    <li><a class="tag1" href="http://richard.kellnerovci.sk/tag/raspbian.html">Raspbian</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/mac-os-x.html">Mac OS X</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/backups.html">backups</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/django.html">Django</a></li>
-  </ol>
-</div><div class="sidebar-module">
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="http://richard.kellnerovci.sk/tag/zabbix.html">Zabbix</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/postgresql.html">PostgreSQL</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/raspbian.html">Raspbian</a></li>
+      </ol>
+    </div>
+
+<div class="sidebar-module">
   <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Elsewhere</h4>
   <ol class="list-unstyled">
     <li><a href="https://github.com/ricco386"><i class="icon-github-sign icon-large"></i>Github</a></li>
@@ -92,7 +134,10 @@
     <li><a href="http://richard.kellnerovci.sk/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
     <li><a href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
   </ol>
-</div></div><!-- /.blog-sidebar --></div><!-- /.row -->
+</div>
+  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
     </div><!--/.container -->
     <!-- End page content -->
 

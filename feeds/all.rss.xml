@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 26 Apr 2015 22:09:00 +0200</lastBuildDate><item><title>Let`s learn what is going on with Raspberry Pis in home network</title><link>http://richard.kellnerovci.sk/install-zabbix-on-raspberry-pi.html</link><description>&lt;p&gt;Since I have several Raspberry Pi’s at home, I figured out it would be cool to know how they perform while I am not using them. I decided to install &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; on one of them. If you don’t know what Zabbix is, it is an open source monitoring solution for networks and applications.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 29 Apr 2015 01:44:00 +0200</lastBuildDate><item><title>Enable PostgreSQL connection from remote machine</title><link>http://richard.kellnerovci.sk/enable-postgresql-connection-from-remote-machine.html</link><description>&lt;p&gt;Let’s continue in previous article and enable PostgreSQL connection from different machine in network. This allows Zabbix web interface to connect from another machine.&lt;/p&gt;
+&lt;p&gt;To allow connection from another machine in network to PostgreSQL modify configuration file &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/postgresql/9.1/main/pg_hba.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;add line to give access to database (zabbix) for user (zabbix) from network (192.168.1.0/24)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;host    zabbix          zabbix          192.168.1.0/24         trust
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;open PostgreSQL configuration file&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/postgresql/9.1/main/postgresql.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To set IP address(es) to listen on, find line&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;listen_addresses=&amp;#39;localhost&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and replace with comma separated list of addresses, or * for all IPs&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;listen_addresses = ‘*’
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Restart PostgreSQL server&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;/etc/init.d/postgresql restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Test your setup from machine where zabbix fronted will be run&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;psql -h 192.168.1.1 -U zabbix -d zabbix
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To setup Zabbix web interface just return to &lt;a href="/install-zabbix-on-raspberry-pi.html"&gt;previous article&lt;/a&gt; and follow the steps there…&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Wed, 29 Apr 2015 01:44:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2015-04-29:enable-postgresql-connection-from-remote-machine.html</guid><category>Zabbix</category><category>PostgreSQL</category><category>Raspbian</category></item><item><title>Let`s learn what is going on with Raspberry Pis in home network</title><link>http://richard.kellnerovci.sk/install-zabbix-on-raspberry-pi.html</link><description>&lt;p&gt;Since I have several Raspberry Pi’s at home, I figured out it would be cool to know how they perform while I am not using them. I decided to install &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; on one of them. If you don’t know what Zabbix is, it is an open source monitoring solution for networks and applications.&lt;/p&gt;
 &lt;p&gt;Let`s install dependencies required for compiling Zabbix from source.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install libxml2-dev libsnmp-dev libcurl4-openssl-dev
 &lt;/pre&gt;&lt;/div&gt;
@@ -190,7 +226,7 @@ sudo chown -R www-data /var/www/zabbix
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Open browser and visit your Raspberry Pi and finish configuration in browser&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Sun, 26 Apr 2015 22:09:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2015-04-26:install-zabbix-on-raspberry-pi.html</guid><category>Raspberry Pi</category><category>Zabbix</category><category>PostgreSQL</category><category>MySQL</category></item><item><title>Install Ludolph on Raspberry Pi</title><link>http://richard.kellnerovci.sk/install-ludolph-on-raspberry-pi.html</link><description>&lt;p&gt;&lt;a href="https://github.com/erigones/Ludolph"&gt;Ludolph&lt;/a&gt; is Jabber Bot with &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; support, it is lightweight and has very few dependencies, therefore ideal to run on Raspberry Pi. It is easily extensible and you can write your own plugins in Python, so you can do literary anything with it via Jabber. Ludolph supports both Python 2 and Python 3.&lt;/p&gt;
+&lt;p&gt;Open browser and visit your Raspberry Pi and finish configuration in browser&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Sun, 26 Apr 2015 22:09:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2015-04-26:install-zabbix-on-raspberry-pi.html</guid><category>Raspberry Pi</category><category>Raspbian</category><category>Zabbix</category><category>PostgreSQL</category><category>MySQL</category></item><item><title>Install Ludolph on Raspberry Pi</title><link>http://richard.kellnerovci.sk/install-ludolph-on-raspberry-pi.html</link><description>&lt;p&gt;&lt;a href="https://github.com/erigones/Ludolph"&gt;Ludolph&lt;/a&gt; is Jabber Bot with &lt;a href="http://www.zabbix.com/"&gt;Zabbix&lt;/a&gt; support, it is lightweight and has very few dependencies, therefore ideal to run on Raspberry Pi. It is easily extensible and you can write your own plugins in Python, so you can do literary anything with it via Jabber. Ludolph supports both Python 2 and Python 3.&lt;/p&gt;
 &lt;p&gt;One of the benefits of having a Jabber bot on Raspberry Pi is that you can communicate with it, even if it doesn’t have public IP address.  Easiest way is to install in into virtualenv and you can start playing with it immediately. We will go throughout proper Raspbian installation with a separate user and setting service as you would run it on production server.&lt;/p&gt;
 &lt;p&gt;Add user under which we will run it&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;useradd -M ludolph
