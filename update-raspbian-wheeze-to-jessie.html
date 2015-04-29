@@ -8,7 +8,7 @@
     <meta name="keywords" content="" />
     <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
 
-    <title>Richard's Log | Update Raspbian Wheeze to Jessie</title>
+    <title>Richard's Log | Update Raspbian Wheezy to Jessie</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -41,7 +41,7 @@
 
     <div class="container">
       <div class="blog-header">
-        <h1 class="blog-title">Update Raspbian Wheeze to Jessie</h1>
+        <h1 class="blog-title">Update Raspbian Wheezy to Jessie</h1>
 <p class="lead blog-description"></p>      </div>
 <div class="row">
   <div class="col-sm-8 blog-main">
@@ -62,7 +62,7 @@
 </pre></div>
 
 
-<p>Replace wheeze with jessie</p>
+<p>Replace wheezy with jessie</p>
 <div class="highlight"><pre>sudo sed -i &#39;s/wheezy/jessie/g&#39; /etc/apt/sources.list
 </pre></div>
 
@@ -80,14 +80,14 @@ sudo apt-get upgrade
 
 
 <p>Again you might be prompted several times that config files have changed, and since I wasn’t doing any changes I have updated new versions. You will also be prompted if you want to disable ssh password authentication as root, which I think is a good idea.</p>
-<p>As I mentioned earlier upgrade will download some extra packages, so if you use raspberry pi with terminal only you can run removal commands from <a href="/minimize-raspbian-image.html">Minimized Raspbian image</a> article where we were minimising Raspbian image.</p>
+<p>As I mentioned earlier upgrade will download some extra packages, so if you use Raspberry Pi with terminal only you can run removal commands from <a href="/minimize-raspbian-image.html">Minimized Raspbian image</a> article where we were minimising Raspbian image.</p>
 <p><strong>Update:</strong> So far I have only noticed that python3-rpi.gpio is not installed as it depends on Python3 lesser than 3.3 and Jessie has 3.4.2</p> </div><!-- entry-content -->
 <div class="entry-comments">
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'richardkellnerovcisk';
     var disqus_identifier = 'update-raspbian-wheeze-to-jessie.html';
-    var disqus_title = 'Update Raspbian Wheeze to Jessie';
+    var disqus_title = 'Update Raspbian Wheezy to Jessie';
     var disqus_url = 'http://richard.kellnerovci.sk/update-raspbian-wheeze-to-jessie.html';
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

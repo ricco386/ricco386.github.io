@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Richard's Log</title><link href="http://richard.kellnerovci.sk/" rel="alternate"></link><link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" rel="self"></link><id>http://richard.kellnerovci.sk/</id><updated>2015-04-30T01:40:00+02:00</updated><entry><title>Update Raspbian Wheeze to Jessie</title><link href="http://richard.kellnerovci.sk/update-raspbian-wheeze-to-jessie.html" rel="alternate"></link><updated>2015-04-30T01:40:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2015-04-29:update-raspbian-wheeze-to-jessie.html</id><summary type="html">&lt;p&gt;This weekend was released new version of Debian Linux, with codename “Jessie”. I have decided to update my Raspbian with Jessie source list and give upgrade a try.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Richard's Log</title><link href="http://richard.kellnerovci.sk/" rel="alternate"></link><link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" rel="self"></link><id>http://richard.kellnerovci.sk/</id><updated>2015-04-30T01:40:00+02:00</updated><entry><title>Update Raspbian Wheezy to Jessie</title><link href="http://richard.kellnerovci.sk/update-raspbian-wheeze-to-jessie.html" rel="alternate"></link><updated>2015-04-30T01:40:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2015-04-29:update-raspbian-wheeze-to-jessie.html</id><summary type="html">&lt;p&gt;This weekend was released new version of Debian Linux, with codename “Jessie”. I have decided to update my Raspbian with Jessie source list and give upgrade a try.&lt;/p&gt;
 &lt;p&gt;First backup sources list&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo cp /etc/apt/sources.list /etc/apt/sources.list.wheezy
 &lt;/pre&gt;&lt;/div&gt;
@@ -13,7 +13,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Replace wheeze with jessie&lt;/p&gt;
+&lt;p&gt;Replace wheezy with jessie&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo sed -i &amp;#39;s/wheezy/jessie/g&amp;#39; /etc/apt/sources.list
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -31,7 +31,7 @@ sudo apt-get upgrade
 
 
 &lt;p&gt;Again you might be prompted several times that config files have changed, and since I wasn’t doing any changes I have updated new versions. You will also be prompted if you want to disable ssh password authentication as root, which I think is a good idea.&lt;/p&gt;
-&lt;p&gt;As I mentioned earlier upgrade will download some extra packages, so if you use raspberry pi with terminal only you can run removal commands from &lt;a href="/minimize-raspbian-image.html"&gt;Minimized Raspbian image&lt;/a&gt; article where we were minimising Raspbian image.&lt;/p&gt;
+&lt;p&gt;As I mentioned earlier upgrade will download some extra packages, so if you use Raspberry Pi with terminal only you can run removal commands from &lt;a href="/minimize-raspbian-image.html"&gt;Minimized Raspbian image&lt;/a&gt; article where we were minimising Raspbian image.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; So far I have only noticed that python3-rpi.gpio is not installed as it depends on Python3 lesser than 3.3 and Jessie has 3.4.2&lt;/p&gt;</summary><category term="Raspberry Pi"></category><category term="Raspbian"></category><category term="Python"></category></entry><entry><title>Enable PostgreSQL connection from remote machine</title><link href="http://richard.kellnerovci.sk/enable-postgresql-connection-from-remote-machine.html" rel="alternate"></link><updated>2015-04-29T01:44:00+02:00</updated><author><name>Richard Kellner</name></author><id>tag:richard.kellnerovci.sk,2015-04-29:enable-postgresql-connection-from-remote-machine.html</id><summary type="html">&lt;p&gt;Let’s continue in previous article and enable PostgreSQL connection from different machine in network. This allows Zabbix web interface to connect from another machine.&lt;/p&gt;
 &lt;p&gt;To allow connection from another machine in network to PostgreSQL modify configuration file &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/postgresql/9.1/main/pg_hba.conf
