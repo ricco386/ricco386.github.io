@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 29 Apr 2015 01:44:00 +0200</lastBuildDate><item><title>Enable PostgreSQL connection from remote machine</title><link>http://richard.kellnerovci.sk/enable-postgresql-connection-from-remote-machine.html</link><description>&lt;p&gt;Let’s continue in previous article and enable PostgreSQL connection from different machine in network. This allows Zabbix web interface to connect from another machine.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 30 Apr 2015 01:40:00 +0200</lastBuildDate><item><title>Update Raspbian Wheeze to Jessie</title><link>http://richard.kellnerovci.sk/update-raspbian-wheeze-to-jessie.html</link><description>&lt;p&gt;This weekend was released new version of Debian Linux, with codename “Jessie”. I have decided to update my Raspbian with Jessie source list and give upgrade a try.&lt;/p&gt;
+&lt;p&gt;First backup sources list&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo cp /etc/apt/sources.list /etc/apt/sources.list.wheezy
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Lets check what’s inside&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;cat&lt;/span&gt; &lt;span class="err"&gt;/etc/apt/sources.list&lt;/span&gt;
+&lt;span class="k"&gt;deb&lt;/span&gt; &lt;span class="s"&gt;http://mirrordirector.raspbian.org/raspbian/&lt;/span&gt; &lt;span class="kp"&gt;wheezy&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt; &lt;span class="kp"&gt;contrib&lt;/span&gt; &lt;span class="kp"&gt;non-free&lt;/span&gt; &lt;span class="kp"&gt;rpi&lt;/span&gt;
+&lt;span class="c"&gt;# Uncomment line below then &amp;#39;apt-get update&amp;#39; to enable &amp;#39;apt-get source&amp;#39;&lt;/span&gt;
+&lt;span class="c"&gt;#deb-src http://mirror.ox.ac.uk/sites/archive.raspbian.org/archive/raspbian/ wheezy main contrib non-free rpi&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Replace wheeze with jessie&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo sed -i &amp;#39;s/wheezy/jessie/g&amp;#39; /etc/apt/sources.list
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we can update sources and upgrade packages&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get update
+sudo apt-get upgrade
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You might be prompted with some questions, for me it was only one prompt if all services should be restarted as they can cause downtimes. I allowed their restart and I wasn’t even kicked out of ssh.&lt;/p&gt;
+&lt;p&gt;I have also run dist-upgrade, to update all packages even this install some packages that are not necessary.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get dist-upgrade
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Again you might be prompted several times that config files have changed, and since I wasn’t doing any changes I have updated new versions. You will also be prompted if you want to disable ssh password authentication as root, which I think is a good idea.&lt;/p&gt;
+&lt;p&gt;As I mentioned earlier upgrade will download some extra packages, so if you use raspberry pi with terminal only you can run removal commands from &lt;a href="/minimize-raspbian-image.html"&gt;Minimized Raspbian image&lt;/a&gt; article where we were minimising Raspbian image.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; So far I have only noticed that python3-rpi.gpio is not installed as it depends on Python3 lesser than 3.3 and Jessie has 3.4.2&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Thu, 30 Apr 2015 01:40:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2015-04-29:update-raspbian-wheeze-to-jessie.html</guid><category>Raspberry Pi</category><category>Raspbian</category><category>Python</category></item><item><title>Enable PostgreSQL connection from remote machine</title><link>http://richard.kellnerovci.sk/enable-postgresql-connection-from-remote-machine.html</link><description>&lt;p&gt;Let’s continue in previous article and enable PostgreSQL connection from different machine in network. This allows Zabbix web interface to connect from another machine.&lt;/p&gt;
 &lt;p&gt;To allow connection from another machine in network to PostgreSQL modify configuration file &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo vi /etc/postgresql/9.1/main/pg_hba.conf
 &lt;/pre&gt;&lt;/div&gt;
