@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/raspbian.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 30 Apr 2015 01:40:00 +0200</lastBuildDate><item><title>Update Raspbian Wheezy to Jessie upgrade</title><link>http://richard.kellnerovci.sk/update-raspbian-wheezy-to-jessie.html</link><description>&lt;p&gt;This weekend was released new version of Debian Linux, with codename “Jessie”. I have decided to update my Raspbian with Jessie source list and give upgrade a try.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/raspbian.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 30 Apr 2015 01:40:00 +0200</lastBuildDate><item><title>Update Raspbian Wheezy to Jessie upgrade</title><link>http://richard.kellnerovci.sk/update-raspbian-wheezy-to-jessie.html</link><description>&lt;p&gt;Last weekend new version of Debian Linux, with codename “Jessie” has been released. I have decided to update my Raspbian with Jessie sources and give upgrade a try.&lt;/p&gt;
 &lt;p&gt;First backup sources list&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo cp /etc/apt/sources.list /etc/apt/sources.list.wheezy
 &lt;/pre&gt;&lt;/div&gt;
@@ -7,6 +7,7 @@
 
 &lt;p&gt;Lets check what’s inside&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;cat&lt;/span&gt; &lt;span class="err"&gt;/etc/apt/sources.list&lt;/span&gt;
+
 &lt;span class="k"&gt;deb&lt;/span&gt; &lt;span class="s"&gt;http://mirrordirector.raspbian.org/raspbian/&lt;/span&gt; &lt;span class="kp"&gt;wheezy&lt;/span&gt; &lt;span class="kp"&gt;main&lt;/span&gt; &lt;span class="kp"&gt;contrib&lt;/span&gt; &lt;span class="kp"&gt;non-free&lt;/span&gt; &lt;span class="kp"&gt;rpi&lt;/span&gt;
 &lt;span class="c"&gt;# Uncomment line below then &amp;#39;apt-get update&amp;#39; to enable &amp;#39;apt-get source&amp;#39;&lt;/span&gt;
 &lt;span class="c"&gt;#deb-src http://mirror.ox.ac.uk/sites/archive.raspbian.org/archive/raspbian/ wheezy main contrib non-free rpi&lt;/span&gt;
