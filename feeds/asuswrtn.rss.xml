@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Richard's Log</title><link>http://richard.kellnerovci.sk/</link><description>Public notepad about stuff I am currently playing with...</description><atom:link href="http://richard.kellnerovci.sk/feeds/asuswrtn.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 01 Sep 2016 01:44:00 +0200</lastBuildDate><item><title>Asuswrt-merlin enable SNMP</title><link>http://richard.kellnerovci.sk/asus-wrt-merlin-enable-snmp.html</link><description>&lt;p&gt;Asus routers using asuswrt have support for SNMP in current firmware. Here is how to enable and test it (using alternative firmwareasuswrt-merlin).&lt;/p&gt;
+&lt;p&gt;In main navigation select &lt;em&gt;Administration&lt;/em&gt; in Advanced settings section and click on SNMP tab.&lt;/p&gt;
+&lt;p&gt;Change Enable SNMP to Yes.
+Update fields: System Name, System Location and SNMP Get Community.&lt;/p&gt;
+&lt;p&gt;Field SNMP Get Community is important as it acts like password. To test if SNMP is working use snmpwalk command (in our case parameter -c public and IP 192.168.1.1).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;snmpwalk -Os -c public -v2c 192.168.1.1 iso.3.6.1.2.1.1.1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If it works you should see, something similar to:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sysDescr.0 = STRING: Linux RT-AC68U-37F8 2.6.36.4brcmarm #1 SMP PREEMPT Mon Nov 2 10:07:03 EST 2015 armv7l
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If your parameter -c doesnt match SNMP Get Community in router, you will get:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Timeout&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;No&lt;/span&gt; &lt;span class="n"&gt;Response&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="mf"&gt;192.168&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;1.1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To get all available data run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;snmpwalk -Os -c public -v2c 192.168.1.1
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Richard Kellner</dc:creator><pubDate>Thu, 01 Sep 2016 01:44:00 +0200</pubDate><guid>tag:richard.kellnerovci.sk,2016-09-01:asus-wrt-merlin-enable-snmp.html</guid><category>SNMP</category><category>Asuswrtn</category></item></channel></rss>

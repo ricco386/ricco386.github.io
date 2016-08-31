@@ -5,14 +5,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/</loc>
-<lastmod>2015-04-30T08:23:20-00:00</lastmod>
+<lastmod>2016-08-31T08:28:10-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://richard.kellnerovci.sk/archives.html</loc>
-<lastmod>2015-04-30T08:23:20-00:00</lastmod>
+<lastmod>2016-08-31T08:28:10-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -22,6 +22,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2015-02-17T22:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/asus-wrt-merlin-enable-snmp.html</loc>
+<lastmod>2016-09-01T01:44:00+02:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>1</priority>
 </url>
 
 <url>
@@ -145,7 +152,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/category/blog.html</loc>
-<lastmod>2015-04-30T01:40:00+00:58</lastmod>
+<lastmod>2016-09-01T01:44:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -200,8 +207,22 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://richard.kellnerovci.sk/tag/asuswrtn.html</loc>
+<lastmod>2016-09-01T01:44:00+00:58</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
 <loc>http://richard.kellnerovci.sk/tag/mac-os-x.html</loc>
 <lastmod>2012-05-30T01:00:00+00:58</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://richard.kellnerovci.sk/tag/snmp.html</loc>
+<lastmod>2016-09-01T01:44:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>
@@ -278,7 +299,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://richard.kellnerovci.sk/author/richard-kellner.html</loc>
-<lastmod>2015-04-30T01:40:00+00:58</lastmod>
+<lastmod>2016-09-01T01:44:00+00:58</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
 </url>

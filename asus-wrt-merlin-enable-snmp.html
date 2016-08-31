@@ -8,7 +8,7 @@
     <meta name="keywords" content="" />
     <link rel="icon" href="http://richard.kellnerovci.sk/theme/img/favicon_erigones.png">
 
-    <title>Richard's Log</title>
+    <title>Richard's Log | Asuswrt-merlin enable SNMP</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://richard.kellnerovci.sk/theme/css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,7 @@
   
     <link href="http://richard.kellnerovci.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Full Atom Feed" />
     <link href="http://richard.kellnerovci.sk/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Richard's Log Full RSS Feed" />
+    <link href="http://richard.kellnerovci.sk/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="Richard's Log Categories Atom Feed" />
   </head>
 
   <body>
@@ -40,50 +41,74 @@
 
     <div class="container">
       <div class="blog-header">
-        <h1 class="blog-title">google-site-verification</h1>
+        <h1 class="blog-title">Asuswrt-merlin enable SNMP</h1>
 <p class="lead blog-description"></p>      </div>
 <div class="row">
   <div class="col-sm-8 blog-main">
+    
+    <div class="blog-post">
+      <h2 class="blog-post-title"></h2>
+      <div class="entry-content"> <p>Asus routers using asuswrt have support for SNMP in current firmware. Here is how to enable and test it (using alternative firmwareasuswrt-merlin).</p>
+<p>In main navigation select <em>Administration</em> in Advanced settings section and click on SNMP tab.</p>
+<p>Change Enable SNMP to Yes.
+Update fields: System Name, System Location and SNMP Get Community.</p>
+<p>Field SNMP Get Community is important as it acts like password. To test if SNMP is working use snmpwalk command (in our case parameter -c public and IP 192.168.1.1).</p>
+<div class="highlight"><pre>snmpwalk -Os -c public -v2c 192.168.1.1 iso.3.6.1.2.1.1.1
+</pre></div>
 
-    <div class='page'>
-      <div class="entry-content"><p>google-site-verification: google35c28093b33dea44.html</p></div>
+
+<p>If it works you should see, something similar to:</p>
+<div class="highlight"><pre>sysDescr.0 = STRING: Linux RT-AC68U-37F8 2.6.36.4brcmarm #1 SMP PREEMPT Mon Nov 2 10:07:03 EST 2015 armv7l
+</pre></div>
+
+
+<p>If your parameter -c doesnt match SNMP Get Community in router, you will get:</p>
+<div class="highlight"><pre><span class="n">Timeout</span><span class="o">:</span> <span class="n">No</span> <span class="n">Response</span> <span class="n">from</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span>
+</pre></div>
+
+
+<p>To get all available data run:</p>
+<div class="highlight"><pre>snmpwalk -Os -c public -v2c 192.168.1.1
+</pre></div> </div><!-- entry-content -->
+<div class="entry-comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'richardkellnerovcisk';
+    var disqus_identifier = 'asus-wrt-merlin-enable-snmp.html';
+    var disqus_title = 'Asuswrt-merlin enable SNMP';
+    var disqus_url = 'http://richard.kellnerovci.sk/asus-wrt-merlin-enable-snmp.html';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div><!-- entry-comments -->
+    </div><!-- /.blog-post -->
+  
+  </div><!-- /.blog-main -->
+
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Author</h4>
+      Richard Kellner
     </div>
 
-  </div>
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Published</h4>
+      <abbr class="published" title="2016-09-01T01:44:00+02:00">01 September 2016</abbr>
+    </div>
 
-<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-<div class="sidebar-module sidebar-module-inset">
-  <blockquote>
-    <p><em>
-      In a world where death is the hunter, my friend, there is no time for regrets or doubts. There is only time for decisions.
-    </em></p>
-    <footer>Carlos Castaneda</footer>
-  </blockquote>
-</div><div>
-  <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
-  <ol id="cloud">
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/centos.html">CentOS</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/mac-os-x.html">Mac OS X</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/nginx.html">Nginx</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/conference.html">Conference</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/django.html">Django</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/python.html">Python</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/virtualenv.html">virtualenv</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/zabbix.html">Zabbix</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/asuswrtn.html">Asuswrtn</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/snmp.html">SNMP</a></li>
-    <li><a class="tag1" href="http://richard.kellnerovci.sk/tag/raspbian.html">Raspbian</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/ext3.html">EXT3</a></li>
-    <li><a class="tag1" href="http://richard.kellnerovci.sk/tag/raspberry-pi.html">Raspberry Pi</a></li>
-    <li><a class="tag4" href="http://richard.kellnerovci.sk/tag/postgresql.html">PostgreSQL</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/php.html">PHP</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/git.html">git</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/ludolph.html">Ludolph</a></li>
-    <li><a class="tag10" href="http://richard.kellnerovci.sk/tag/apache.html">Apache</a></li>
-    <li><a class="tag3" href="http://richard.kellnerovci.sk/tag/mysql.html">MySQL</a></li>
-    <li><a class="tag6" href="http://richard.kellnerovci.sk/tag/backups.html">backups</a></li>
-  </ol>
-</div><div class="sidebar-module">
+    <div class="sidebar-module">
+      <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;Tags</h4>
+      <ol class="list-unstyled">
+        <li><a href="http://richard.kellnerovci.sk/tag/snmp.html">SNMP</a></li>
+        <li><a href="http://richard.kellnerovci.sk/tag/asuswrtn.html">Asuswrtn</a></li>
+      </ol>
+    </div>
+
+<div class="sidebar-module">
   <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Elsewhere</h4>
   <ol class="list-unstyled">
     <li><a href="https://github.com/ricco386"><i class="icon-github-sign icon-large"></i>Github</a></li>
@@ -93,7 +118,10 @@
     <li><a href="http://richard.kellnerovci.sk/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
     <li><a href="http://richard.kellnerovci.sk/feeds/all.rss.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>rss feed</a></li>
   </ol>
-</div></div><!-- /.blog-sidebar --></div><!-- /.row -->
+</div>
+  </div><!-- /.blog-sidebar --> 
+
+</div><!-- /.row -->
     </div><!--/.container -->
     <!-- End page content -->
 
